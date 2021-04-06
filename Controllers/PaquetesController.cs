@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.DAL;
 using TallerCuatro.Models.Entities;
 
@@ -12,18 +13,20 @@ namespace TallerCuatro.Controllers
 {
     public class PaquetesController : Controller
     {
-        private readonly DbContextTaller _context;
+        private readonly IPaqueteBusiness _paqueteBusiness;
 
-        public PaquetesController(DbContextTaller context)
+        public PaquetesController(IPaqueteBusiness paqueteBusiness)
         {
-            _context = context;
+            _paqueteBusiness = paqueteBusiness;
         }
 
         // GET: Paquetes
         public async Task<IActionResult> Index()
         {
-            var dbContextTaller = _context.Paquetes.Include(p => p.Cliente);
-            return View(await dbContextTaller.ToListAsync());
+
+            var paquetes = _paqueteBusiness.ObtenerListaPaquetes();
+
+            return View(await paquetes);
         }
 
         // GET: Paquetes/Details/5
@@ -34,9 +37,7 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var paquete = await _context.Paquetes
-                .Include(p => p.Cliente)
-                .FirstOrDefaultAsync(m => m.PaqueteId == id);
+            var paquete = await _paqueteBusiness.ObtenerPaquetePorId(id.Value);
             if (paquete == null)
             {
                 return NotFound();
@@ -46,9 +47,11 @@ namespace TallerCuatro.Controllers
         }
 
         // GET: Paquetes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId");
+            ViewData["ClienteId"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre") ;
+            ViewData["TransportadoraId"] = new SelectList(await _paqueteBusiness.ObtenerListaTransportadora(), "TransportadoraId", "Nombre");
+            ViewData["TipoMercanciaId"] = new SelectList(await _paqueteBusiness.ObtenerListaTipoMercancia(), "TipoMercanciaId", "Nombre");
             return View();
         }
 
@@ -57,18 +60,18 @@ namespace TallerCuatro.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaqueteId,Nombre,ClienteId")] Paquete paquete)
+        public async Task<IActionResult> Create([Bind("PaqueteId,CodigoMIA,Peso,ClienteId, Estado,NombreImagen,EmpresaTransportadora,TipoDeMercancia, GuiaColombia, ValorAPAgar")] Paquete paquete)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(paquete);
-                await _context.SaveChangesAsync();
+                await _paqueteBusiness.GuardarPaquete(paquete);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", paquete.ClienteId);
+            ViewData["ClienteId"] = _paqueteBusiness.ObtenerListaClientes();
             return View(paquete);
         }
 
+        /*
         // GET: Paquetes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -155,6 +158,6 @@ namespace TallerCuatro.Controllers
         private bool PaqueteExists(int id)
         {
             return _context.Paquetes.Any(e => e.PaqueteId == id);
-        }
+        }*/
     }
 }

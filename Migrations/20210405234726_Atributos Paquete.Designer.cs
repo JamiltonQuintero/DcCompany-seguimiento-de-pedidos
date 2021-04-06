@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TallerCuatro.Models.DAL;
 
 namespace TallerCuatro.Migrations
 {
     [DbContext(typeof(DbContextTaller))]
-    partial class DbContextTallerModelSnapshot : ModelSnapshot
+    [Migration("20210405234726_Atributos Paquete")]
+    partial class AtributosPaquete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,6 +48,9 @@ namespace TallerCuatro.Migrations
                     b.Property<string>("CodigoMIA")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmpresaTransportadora")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Estado")
                         .HasColumnType("nvarchar(max)");
 
@@ -58,11 +63,8 @@ namespace TallerCuatro.Migrations
                     b.Property<double>("Peso")
                         .HasColumnType("float");
 
-                    b.Property<int>("TipoMercanciaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransportadoraId")
-                        .HasColumnType("int");
+                    b.Property<string>("TipoDeMercancia")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("ValorAPAgar")
                         .HasColumnType("real");
@@ -71,41 +73,7 @@ namespace TallerCuatro.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("TipoMercanciaId");
-
-                    b.HasIndex("TransportadoraId");
-
                     b.ToTable("Paquetes");
-                });
-
-            modelBuilder.Entity("TallerCuatro.Models.Entities.TipoMercancia", b =>
-                {
-                    b.Property<int>("TipoMercanciaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TipoMercanciaId");
-
-                    b.ToTable("TiposMercancias");
-                });
-
-            modelBuilder.Entity("TallerCuatro.Models.Entities.Transportadora", b =>
-                {
-                    b.Property<int>("TransportadoraId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TransportadoraId");
-
-                    b.ToTable("Transportadoras");
                 });
 
             modelBuilder.Entity("TallerCuatro.Models.Entities.Paquete", b =>
@@ -113,18 +81,6 @@ namespace TallerCuatro.Migrations
                     b.HasOne("TallerCuatro.Models.Entities.Cliente", "Cliente")
                         .WithMany()
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TallerCuatro.Models.Entities.TipoMercancia", "TipoMercancia")
-                        .WithMany()
-                        .HasForeignKey("TipoMercanciaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TallerCuatro.Models.Entities.Transportadora", "Transportadora")
-                        .WithMany()
-                        .HasForeignKey("TransportadoraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
