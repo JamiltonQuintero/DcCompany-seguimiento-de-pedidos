@@ -52,10 +52,13 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Cliente)
                         </th>
-
+                        <th>
+                            @Html.DisplayNameFor(model => model.ValorAPAgar)
+                        </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Estado)
                         </th>
+
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -66,13 +69,16 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.CodigoMIA)
                         </td>
-                            
+
                         <td>
                             @Html.DisplayFor(modelItem => item.Peso)
                         </td>
 
                         <td>
                             @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValorAPAgar)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Estado)

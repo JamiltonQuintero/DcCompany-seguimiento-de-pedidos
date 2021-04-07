@@ -60,14 +60,18 @@ namespace TallerCuatro.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaqueteId,CodigoMIA,Peso,ClienteId, Estado,NombreImagen,EmpresaTransportadora,TipoDeMercancia, GuiaColombia, ValorAPAgar")] Paquete paquete)
+        public async Task<IActionResult> Create([Bind("PaqueteId,CodigoMIA,Peso,ClienteId, Estado,NombreImagen,TransportadoraId,TipoMercanciaId, GuiaColombia, ValorAPAgar")] Paquete paquete)
         {
             if (ModelState.IsValid)
             {
+                
+
                 await _paqueteBusiness.GuardarPaquete(paquete);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = _paqueteBusiness.ObtenerListaClientes();
+            ViewData["ClienteId"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre");
+            ViewData["TransportadoraId"] = new SelectList(await _paqueteBusiness.ObtenerListaTransportadora(), "TransportadoraId", "Nombre");
+            ViewData["TipoMercanciaId"] = new SelectList(await _paqueteBusiness.ObtenerListaTipoMercancia(), "TipoMercanciaId", "Nombre");
             return View(paquete);
         }
 

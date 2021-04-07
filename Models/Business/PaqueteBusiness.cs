@@ -27,7 +27,9 @@ namespace TallerCuatro.Models.Business
         public async Task<IEnumerable<Cliente>> ObtenerListaClientes()
         {
             return await _context.Clientes.ToListAsync();
+         
         }
+
 
         public async Task<IEnumerable<Transportadora>> ObtenerListaTransportadora()
         {
@@ -54,6 +56,13 @@ namespace TallerCuatro.Models.Business
 
         public async Task GuardarPaquete(Paquete paquete)
         {
+            paquete.CodigoMIA = ("MIA-" + ObtenerUltimoId());
+
+            if (paquete.ValorAPAgar == 0)
+            {
+                paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
+            }
+           
             _context.Add(paquete);
             await ActulizarBD();
         }
@@ -64,6 +73,11 @@ namespace TallerCuatro.Models.Business
 
             await _context.SaveChangesAsync();
 
+        }
+
+        private int ObtenerUltimoId()
+        {
+            return _context.Paquetes.Count();
         }
 
     }
