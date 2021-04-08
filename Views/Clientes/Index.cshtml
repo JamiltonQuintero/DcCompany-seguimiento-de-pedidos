@@ -52,32 +52,33 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClienteId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Correo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Direccion)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.ClienteId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.ClienteId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ClienteId">Delete</a>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClienteId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Correo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Direccion)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ClienteId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.ClienteId">Details</a> |
+                                <a asp-action="Delete" onclick="return confirm('¿Est&aacute; seguro que desea eliminar el cliente?')" asp-route-id="@item.ClienteId">Delete</a>
+                                <!--<a onclick="confirm('¿Est&aacute; seguro que desea eliminar el cliente?')">Delete</a>-->
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
 
 
-        </div><!-- /.container-fluid -->
-    </div>
+                </div><!-- /.container-fluid -->
+</div>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->

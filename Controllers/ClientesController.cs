@@ -111,7 +111,7 @@ namespace TallerCuatro.Controllers
             ViewData["listaClientes"] = _clienteBusiness.ObtenerListaClientes();
             return View(cliente);
         }
-        /*
+
         // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -120,30 +120,18 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.ClienteId == id);
-            if (cliente == null)
+            var empleado = await _clienteBusiness.ObtenerClientePorId(id.Value);
+            if (empleado == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
-        }
+            await _clienteBusiness.EliminarCliente(empleado);
 
-        // POST: Clientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var cliente = await _context.Clientes.FindAsync(id);
-            _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+       
 
-        private bool ClienteExists(int id)
-        {
-            return _context.Clientes.Any(e => e.ClienteId == id);
-        }*/
+        
     }
 }

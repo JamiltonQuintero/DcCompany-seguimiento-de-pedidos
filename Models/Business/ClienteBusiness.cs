@@ -33,11 +33,9 @@ namespace TallerCuatro.Models.Business
             {
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
-
             }
             catch (Exception e)
             {
-
                 throw e;
             }
 
@@ -48,6 +46,18 @@ namespace TallerCuatro.Models.Business
             {
                 _context.Update(cliente);
                 await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public async Task EliminarCliente(Cliente cliente)
+        {
+            try
+            {
+                _context.Remove(cliente);
+                await _context.SaveChangesAsync();
 
             }
             catch (Exception e)
@@ -57,6 +67,7 @@ namespace TallerCuatro.Models.Business
             }
 
         }
+
 
 
 

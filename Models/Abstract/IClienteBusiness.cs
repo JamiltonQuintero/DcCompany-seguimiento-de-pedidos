@@ -13,6 +13,7 @@ namespace TallerCuatro.Models.Abstract
         Task<Cliente> ObtenerClientePorId(int id);
         Task GuardarCliente(Cliente cliente);
         Task EditarCliente(Cliente cliente);
+        Task EliminarCliente(Cliente cliente);
 
     }
 }
