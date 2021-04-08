@@ -64,9 +64,14 @@ namespace TallerCuatro.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                 _context.Add(paquete);
+                await _context.SaveChangesAsync();
+
                 
 
                 await _paqueteBusiness.GuardarPaquete(paquete);
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre");
