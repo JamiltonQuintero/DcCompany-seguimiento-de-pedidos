@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.DAL;
 using TallerCuatro.Models.Entities;
+using TallerCuatro.Models.ViewModels;
 
 namespace TallerCuatro.Controllers
 {
     public class PaquetesController : Controller
     {
         private readonly IPaqueteBusiness _paqueteBusiness;
+        private readonly IClienteBusiness _clienteBusiness;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public PaquetesController(IPaqueteBusiness paqueteBusiness)
+        public PaquetesController(IPaqueteBusiness paqueteBusiness, IClienteBusiness clienteBusiness, IWebHostEnvironment hostEnvironment)
         {
             _paqueteBusiness = paqueteBusiness;
+            _clienteBusiness = clienteBusiness;
+            _hostEnvironment = hostEnvironment;
         }
 
         // GET: Paquetes
@@ -27,6 +34,7 @@ namespace TallerCuatro.Controllers
             var paquetes = _paqueteBusiness.ObtenerListaPaquetes();
 
             return View(await paquetes);
+           
         }
 
         // GET: Paquetes/Details/5
@@ -49,9 +57,11 @@ namespace TallerCuatro.Controllers
         // GET: Paquetes/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["ClienteId"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre") ;
-            ViewData["TransportadoraId"] = new SelectList(await _paqueteBusiness.ObtenerListaTransportadora(), "TransportadoraId", "Nombre");
-            ViewData["TipoMercanciaId"] = new SelectList(await _paqueteBusiness.ObtenerListaTipoMercancia(), "TipoMercanciaId", "Nombre");
+
+            
+            ViewData["listaClientes"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre") ;
+            ViewData["listaTransportadoras"] = new SelectList(await _paqueteBusiness.ObtenerListaTransportadora(), "TransportadoraId", "Nombre");
+            ViewData["listaTipomercancias"] = new SelectList(await _paqueteBusiness.ObtenerListaTipoMercancia(), "TipoMercanciaId", "Nombre");
             return View();
         }
 
@@ -59,20 +69,56 @@ namespace TallerCuatro.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaqueteId,CodigoMIA,Peso,ClienteId, Estado,NombreImagen,TransportadoraId,TipoMercanciaId, GuiaColombia, ValorAPAgar")] Paquete paquete)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(PaqueteViewModel paqueteViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                
+          
 
-                await _paqueteBusiness.GuardarPaquete(paquete);
-                return RedirectToAction(nameof(Index));
-            }
+                if (paqueteViewModel.ClienteId != 0 && paqueteViewModel.Peso != 0 && paqueteViewModel.Imagen != null)
+                {
+
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string nombreImagen = Path.GetFileNameWithoutExtension(paqueteViewModel.Imagen.FileName);
+                    string extension = Path.GetExtension(paqueteViewModel.Imagen.FileName);
+                    nombreImagen = nombreImagen + DateTime.Now.ToString("yymmssfff") + extension;
+
+                Paquete paquete = new Paquete
+                {
+                        CodigoMIA = "",
+                        Peso = paqueteViewModel.Peso,
+                        NombreImagen = nombreImagen,
+                        Estado = paqueteViewModel.Estado,
+                        GuiaColombia = paqueteViewModel.GuiaColombia,
+                        ValorAPAgar = paqueteViewModel.ValorAPAgar,
+                        ClienteId = paqueteViewModel.ClienteId,
+                        TransportadoraId = paqueteViewModel.TransportadoraId,
+                        TipoMercanciaId = paqueteViewModel.TipoMercanciaId
+                    };
+
+                    string path = Path.Combine(wwwRootPath + "/image/" + nombreImagen);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await paqueteViewModel.Imagen.CopyToAsync(fileStream);
+                    }
+                    try
+                    {
+                        await _paqueteBusiness.GuardarPaquete(paquete);
+                        return Json(new { data = "ok" });
+                    }
+                    catch (Exception)
+                    {
+                        return Json(new { data = "error" });
+                    }
+                        
+                }
+                return Json(new { data = "error" });
+       
+
+            /*
             ViewData["ClienteId"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre");
             ViewData["TransportadoraId"] = new SelectList(await _paqueteBusiness.ObtenerListaTransportadora(), "TransportadoraId", "Nombre");
             ViewData["TipoMercanciaId"] = new SelectList(await _paqueteBusiness.ObtenerListaTipoMercancia(), "TipoMercanciaId", "Nombre");
-            return View(paquete);
+            return View(paquete);*/
         }
 
         /*

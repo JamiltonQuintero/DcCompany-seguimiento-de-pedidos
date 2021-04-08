@@ -22,7 +22,7 @@ namespace TallerCuatro.Models.Entities
         public int TransportadoraId { get; set; }
         public virtual Transportadora Transportadora { get; set; }
 
-        public int TipoMercanciaId { get; set; }
+        public int TipoMercanciaId{ get; set; }
         public virtual TipoMercancia TipoMercancia { get; set; }
        
 
