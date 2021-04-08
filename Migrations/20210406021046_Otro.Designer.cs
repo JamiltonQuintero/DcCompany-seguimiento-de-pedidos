@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TallerCuatro.Models.DAL;
 
 namespace TallerCuatro.Migrations
 {
     [DbContext(typeof(DbContextTaller))]
-    partial class DbContextTallerModelSnapshot : ModelSnapshot
+    [Migration("20210406021046_Otro")]
+    partial class Otro
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,16 +27,7 @@ namespace TallerCuatro.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Correo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Direccion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClienteId");
@@ -78,8 +71,7 @@ namespace TallerCuatro.Migrations
 
                     b.HasKey("PaqueteId");
 
-                    b.HasIndex("ClienteId")
-                        .IsUnique();
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("TipoMercanciaId");
 
@@ -121,8 +113,8 @@ namespace TallerCuatro.Migrations
             modelBuilder.Entity("TallerCuatro.Models.Entities.Paquete", b =>
                 {
                     b.HasOne("TallerCuatro.Models.Entities.Cliente", "Cliente")
-                        .WithOne("Paquete")
-                        .HasForeignKey("TallerCuatro.Models.Entities.Paquete", "ClienteId")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

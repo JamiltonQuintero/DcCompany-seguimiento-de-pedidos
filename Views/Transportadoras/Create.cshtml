@@ -1,10 +1,8 @@
-﻿@model TallerCuatro.Models.Entities.Cliente
+﻿@model TallerCuatro.Models.Entities.Transportadora
 
 @{
     ViewData["Title"] = "Create";
 }
-
-
 
 
 @section Styles{
@@ -18,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Crear cliente</h1>
+                    <h1 class="m-0">Crear transportadora</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Clientes">Gestión Clientes</a></li>
-                        <li class="breadcrumb-item active">Crear cliente</li>
+                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Clientes">Gestión Transportadora</a></li>
+                        <li class="breadcrumb-item active">Crear transportadora</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -40,22 +38,11 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="Nombre" class="control-label"></label>
-                            <input asp-for="Nombre" class="form-control" id="nombre" name="nombre" />
+                            <input asp-for="Nombre" class="form-control" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Correo" class="control-label"></label>
-                            <input asp-for="Correo" class="form-control" id="Correo" name="Correo" />
-                            <span asp-validation-for="Correo" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Direccion" class="control-label"></label>
-                            <input asp-for="Direccion" class="form-control" id="Direccion" name="Direccion" />
-                            <span asp-validation-for="Direccion" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="submit" value="Crear" class="btn btn-primary" />
+                            <input type="submit" value="Create" class="btn btn-primary" />
                         </div>
                     </form>
 
@@ -71,3 +58,6 @@
 
 @section Scripts{
 }
+
+
+

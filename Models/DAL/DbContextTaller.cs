@@ -14,8 +14,9 @@ namespace TallerCuatro.Models.DAL
         }
 
         public DbSet<Cliente> Clientes { get; set; }
-
         public DbSet<Paquete> Paquetes { get; set; }
+        public DbSet<Transportadora> Transportadoras { get; set; }
+        public DbSet<TipoMercancia> TiposMercancias { get; set; }
 
     }
 }

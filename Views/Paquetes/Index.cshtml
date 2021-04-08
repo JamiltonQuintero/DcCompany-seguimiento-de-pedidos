@@ -40,34 +40,55 @@
                 <a class="btn btn-outline-success" asp-action="Create"><i class="fa fa-plus-circle"></i> Crear nuevo paquete</a>
             </p>
 
-            <table class="table">
+            <table class="table" id="tabla">
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Nombre)
+                            @Html.DisplayNameFor(model => model.CodigoMIA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Peso)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Cliente)
                         </th>
-                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ValorAPAgar)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Estado)
+                        </th>
+
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nombre)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Cliente.ClienteId)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.PaqueteId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.PaqueteId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.PaqueteId">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodigoMIA)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Peso)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValorAPAgar)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.PaqueteId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.PaqueteId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.PaqueteId">Delete</a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
