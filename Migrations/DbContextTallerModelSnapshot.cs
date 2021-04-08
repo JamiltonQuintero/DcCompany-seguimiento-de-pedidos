@@ -25,7 +25,16 @@ namespace TallerCuatro.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClienteId");
@@ -69,7 +78,8 @@ namespace TallerCuatro.Migrations
 
                     b.HasKey("PaqueteId");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("ClienteId")
+                        .IsUnique();
 
                     b.HasIndex("TipoMercanciaId");
 
@@ -111,8 +121,8 @@ namespace TallerCuatro.Migrations
             modelBuilder.Entity("TallerCuatro.Models.Entities.Paquete", b =>
                 {
                     b.HasOne("TallerCuatro.Models.Entities.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("ClienteId")
+                        .WithOne("Paquete")
+                        .HasForeignKey("TallerCuatro.Models.Entities.Paquete", "ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

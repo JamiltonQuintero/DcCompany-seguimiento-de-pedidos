@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.DAL;
 using TallerCuatro.Models.Entities;
 
@@ -12,19 +13,19 @@ namespace TallerCuatro.Controllers
 {
     public class ClientesController : Controller
     {
-        private readonly DbContextTaller _context;
+        private readonly IClienteBusiness _clienteBusiness;
 
-        public ClientesController(DbContextTaller context)
+        public ClientesController(IClienteBusiness clienteBusiness)
         {
-            _context = context;
+            _clienteBusiness = clienteBusiness;
         }
 
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clientes.ToListAsync());
+            return View(await _clienteBusiness.ObtenerListaClientes());
         }
-
+        
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -33,8 +34,8 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.ClienteId == id);
+            var cliente = await _clienteBusiness.ObtenerClientePorId(id.Value);
+                
             if (cliente == null)
             {
                 return NotFound();
@@ -44,8 +45,9 @@ namespace TallerCuatro.Controllers
         }
 
         // GET: Clientes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewData["listaClientes"] = new SelectList(await _clienteBusiness.ObtenerListaClientes(), "Numero de casillero", "Nombre", "Correo", "Direcion");
             return View();
         }
 
@@ -53,17 +55,23 @@ namespace TallerCuatro.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClienteId,Nombre")] Cliente cliente)
+       // [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ClienteId,Nombre,Correo,Direccion")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var clienteTemp = await _clienteBusiness.ObtenerClientePorId(cliente.ClienteId);
+
+                if (clienteTemp == null)
+                {
+                    await _clienteBusiness.GuardarCliente(cliente);
+                    return RedirectToAction(nameof(Index));
+                }
             }
+
             return View(cliente);
         }
+
 
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -73,20 +81,22 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _clienteBusiness.ObtenerClientePorId(id.Value);
             if (cliente == null)
             {
                 return NotFound();
             }
+
             return View(cliente);
         }
+        
 
         // POST: Clientes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClienteId,Nombre")] Cliente cliente)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ClienteId,Nombre,Correo,Direccion")] Cliente cliente)
         {
             if (id != cliente.ClienteId)
             {
@@ -95,24 +105,10 @@ namespace TallerCuatro.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(cliente);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClienteExists(cliente.ClienteId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _clienteBusiness.EditarCliente(cliente);
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["listaClientes"] = _clienteBusiness.ObtenerListaClientes();
             return View(cliente);
         }
 
@@ -124,30 +120,18 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.ClienteId == id);
-            if (cliente == null)
+            var empleado = await _clienteBusiness.ObtenerClientePorId(id.Value);
+            if (empleado == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
-        }
+            await _clienteBusiness.EliminarCliente(empleado);
 
-        // POST: Clientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var cliente = await _context.Clientes.FindAsync(id);
-            _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+       
 
-        private bool ClienteExists(int id)
-        {
-            return _context.Clientes.Any(e => e.ClienteId == id);
-        }
+        
     }
 }
