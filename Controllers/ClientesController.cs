@@ -12,7 +12,7 @@ using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Controllers
 {
-    [Authorize]
+   
     public class ClientesController : Controller
     {
         private readonly IClienteBusiness _clienteBusiness;

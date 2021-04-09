@@ -11,7 +11,7 @@ using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Controllers
 {
-    [Authorize]
+   
     public class TransportadorasController : Controller
     {
         private readonly DbContextTaller _context;

@@ -16,7 +16,7 @@ using TallerCuatro.Models.ViewModels;
 namespace TallerCuatro.Controllers
 {
 
-    [Authorize]
+   
 
     public class PaquetesController : Controller
     {
