@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,16 +12,18 @@ using TallerCuatro.Models.ViewModels.Usuario;
 
 namespace TallerCuatro.Controllers
 {
-    [Authorize]
+    
     public class UsuariosController : Controller
     {
         private readonly UserManager<UsuarioIdentity> _userManager;
         private readonly SignInManager<UsuarioIdentity> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UsuariosController(UserManager<UsuarioIdentity> userManager, SignInManager<UsuarioIdentity> signInManager)
+        public UsuariosController(UserManager<UsuarioIdentity> userManager, SignInManager<UsuarioIdentity> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public async Task <IActionResult> Index()
@@ -39,7 +43,7 @@ namespace TallerCuatro.Controllers
                     Nombre = usuario.Nombre,
                     Documento = usuario.Documento,
                     Email = usuario.Email,
-                    //Rol = await ObtenerRolUsuario(usuario)
+                    Rol = await ObtenerRolUsuario(usuario)
                 };
 
                 listaUsuariosViewModel.Add(usuarioViewModel);
@@ -48,12 +52,15 @@ namespace TallerCuatro.Controllers
             return View(listaUsuariosViewModel);
 
         }
-
+        private async Task<List<string>> ObtenerRolUsuario(UsuarioIdentity usuario)
+        {
+            return new List<string>(await _userManager.GetRolesAsync(usuario));
+        }
 
         [HttpGet]
-        public IActionResult Crearusuario()
+        public async Task <IActionResult> Crearusuario()
         {
-
+            ViewData["Roles"] = new SelectList(await _roleManager.Roles.ToListAsync(), "Name", "Name");
             return View();
         }
 
@@ -90,10 +97,12 @@ namespace TallerCuatro.Controllers
                 }
                 catch (Exception)
                 {
+                    ViewData["Roles"] = new SelectList(await _roleManager.Roles.ToListAsync(), "Name", "Name");
                     return View(usuarioViewModel);
                 }
 
             }
+            ViewData["Roles"] = new SelectList(await _roleManager.Roles.ToListAsync(), "Name", "Name");
             return View(usuarioViewModel);
         }
 
