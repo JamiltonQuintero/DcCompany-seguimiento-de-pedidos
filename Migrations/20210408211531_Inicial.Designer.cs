@@ -9,8 +9,8 @@ using TallerCuatro.Models.DAL;
 namespace TallerCuatro.Migrations
 {
     [DbContext(typeof(DbContextTaller))]
-    [Migration("20210406004449_Entites Trans, Merca")]
-    partial class EntitesTransMerca
+    [Migration("20210408211531_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,16 @@ namespace TallerCuatro.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClienteId");
@@ -48,9 +57,6 @@ namespace TallerCuatro.Migrations
                     b.Property<string>("CodigoMIA")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EmpresaTransportadora")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Estado")
                         .HasColumnType("nvarchar(max)");
 
@@ -63,15 +69,23 @@ namespace TallerCuatro.Migrations
                     b.Property<double>("Peso")
                         .HasColumnType("float");
 
-                    b.Property<string>("TipoDeMercancia")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TipoMercanciaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransportadoraId")
+                        .HasColumnType("int");
 
                     b.Property<float>("ValorAPAgar")
                         .HasColumnType("real");
 
                     b.HasKey("PaqueteId");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("ClienteId")
+                        .IsUnique();
+
+                    b.HasIndex("TipoMercanciaId");
+
+                    b.HasIndex("TransportadoraId");
 
                     b.ToTable("Paquetes");
                 });
@@ -109,8 +123,20 @@ namespace TallerCuatro.Migrations
             modelBuilder.Entity("TallerCuatro.Models.Entities.Paquete", b =>
                 {
                     b.HasOne("TallerCuatro.Models.Entities.Cliente", "Cliente")
+                        .WithOne("Paquete")
+                        .HasForeignKey("TallerCuatro.Models.Entities.Paquete", "ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TallerCuatro.Models.Entities.TipoMercancia", "TipoMercancia")
                         .WithMany()
-                        .HasForeignKey("ClienteId")
+                        .HasForeignKey("TipoMercanciaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TallerCuatro.Models.Entities.Transportadora", "Transportadora")
+                        .WithMany()
+                        .HasForeignKey("TransportadoraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

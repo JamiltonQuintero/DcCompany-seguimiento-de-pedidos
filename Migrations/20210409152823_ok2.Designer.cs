@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TallerCuatro.Models.DAL;
 
 namespace TallerCuatro.Migrations
 {
     [DbContext(typeof(DbContextTaller))]
-    partial class DbContextTallerModelSnapshot : ModelSnapshot
+    [Migration("20210409152823_ok2")]
+    partial class ok2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

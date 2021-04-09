@@ -9,7 +9,9 @@ namespace TallerCuatro.Models.ViewModels
     public class PaqueteViewModel
     {
 
-        public double Peso { get; set; }
+        public string CodigoMIA { get; set; }
+        public double Peso { get; set; }       
+        public string NombreImagen { get; set; }
         public IFormFile Imagen { get; set; }
         public String Estado { get; set; }
         public int GuiaColombia { get; set; }

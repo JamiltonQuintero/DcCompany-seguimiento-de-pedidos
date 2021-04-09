@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TallerCuatro.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         public IActionResult Dashboard()

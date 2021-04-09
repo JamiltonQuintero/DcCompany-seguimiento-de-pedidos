@@ -22,6 +22,7 @@ namespace TallerCuatro.Models.Abstract
         Task<Paquete> ObtenerPaquetePorId(int id);
 
         Task GuardarPaquete(Paquete paquete);
+        Task EditarPaquete(Paquete paquete);
 
     }
 }

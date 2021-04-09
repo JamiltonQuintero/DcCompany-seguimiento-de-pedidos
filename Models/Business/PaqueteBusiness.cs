@@ -43,37 +43,61 @@ namespace TallerCuatro.Models.Business
 
         public async Task<IEnumerable<Paquete>> ObtenerListaPaquetes()
         {
-            return await _context.Paquetes.Include("Cliente").ToListAsync();
+            return await _context.Paquetes.
+                Include("Cliente").
+                Include(tm => tm.TipoMercancia).
+                Include(t => t.Transportadora).ToListAsync();
         }
 
         public async Task<Paquete> ObtenerPaquetePorId(int id)
         {
             return await _context.Paquetes
-                .Include(p => p.Cliente)
+                .Include(p => p.Cliente).Include(tm => tm.TipoMercancia).Include(t => t.Transportadora)
                 .FirstOrDefaultAsync(m => m.PaqueteId == id);
         }
 
 
         public async Task GuardarPaquete(Paquete paquete)
         {
-            paquete.CodigoMIA = ("MIA-" + ObtenerUltimoId());
+           paquete.CodigoMIA = ("MIA-" + ObtenerUltimoId());
 
             if (paquete.ValorAPAgar == 0)
             {
                 paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
             }
+
+            try
+            {
+                _context.Add(paquete);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException.Message);
+            }
+
            
-            _context.Add(paquete);
-            await ActulizarBD();
         }
 
-
-        private async Task ActulizarBD()
+        public async Task EditarPaquete(Paquete paquete)
         {
 
-            await _context.SaveChangesAsync();
+            if (paquete.ValorAPAgar == 0)
+            {
+                paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
+            }
 
+            try
+            {
+                _context.Update(paquete);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+            }
         }
+
 
         private int ObtenerUltimoId()
         {

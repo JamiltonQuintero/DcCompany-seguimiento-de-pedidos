@@ -10,6 +10,7 @@ using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Controllers
 {
+    [Authorize]
     public class TipoMercanciasController : Controller
     {
         private readonly DbContextTaller _context;

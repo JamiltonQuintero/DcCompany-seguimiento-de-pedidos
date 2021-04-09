@@ -38,13 +38,6 @@
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
-                        <div class="form-group">
-                            <label asp-for="Peso" class="control-label"></label>
-                            <input asp-for="Peso" class="form-control" id="peso" />
-                            <span asp-validation-for="Peso" class="text-danger"></span>
-                        </div>
-
                         <div class="form-group">
 
 
@@ -52,6 +45,11 @@
                             <select asp-for="ClienteId" id="cliente" class="form-control" asp-items="ViewBag.listaClientes"></select>
                         </div>
 
+                        <div class="form-group">
+                            <label asp-for="Peso" class="control-label"></label>
+                            <input asp-for="Peso" class="form-control" id="peso" />
+                            <span asp-validation-for="Peso" class="text-danger"></span>
+                        </div>
 
                         <div class="form-group">
                             <label asp-for="Estado" class="control-label"></label>
@@ -82,7 +80,7 @@
 
                         <div class="form-group">
                             <label asp-for="GuiaColombia" class="control-label"></label>
-                            <input asp-for="GuiaColombia" id="guiaColombia"  class="form-control" />
+                            <input asp-for="GuiaColombia" id="guiaColombia" class="form-control" />
                             <span asp-validation-for="GuiaColombia" class="text-danger"></span>
                         </div>
 
@@ -95,7 +93,7 @@
 
                         <br />
                         <div class="form-group">
-                            <input type="button" value="Create" id="crearPaquete" name="crearPaquete" class="btn btn-primary" />
+                            <input type="button" value="Crear" id="crearPaquete" name="crearPaquete" class="btn btn-primary" />
                         </div>
                     </form>
 
@@ -110,15 +108,15 @@
 <!-- /.content-wrapper -->
 
 @section Scripts{
-    
 
+ 
     <script>
 
         $(document).ready(function () {
 
             $("#crearPaquete").click(function () {
 
-              
+
 
                 Swal.fire({ //Mensaje de confirmar
                     title: '¿Desea guardar el paquete del cliente?',
@@ -141,7 +139,7 @@
                     formData.append("GuiaColombia", document.getElementById("guiaColombia").value);
                     formData.append("ValorAPAgar", document.getElementById("valorAPagar").value);
                     formData.append("Imagen", imagen[0]);
-  
+
 
                     $.ajax({
                             type: "POST",

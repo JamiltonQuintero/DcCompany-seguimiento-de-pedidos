@@ -1,8 +1,8 @@
-﻿ <!-- Main Sidebar Container -->
+﻿<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-        <img src="~/image/DC_free-file.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="~/image/WhatsApp Image 2021-04-04 at 10.13.23 PM.jpeg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">DC company</span>
     </a>
 
@@ -21,7 +21,7 @@
         <!-- SidebarSearch Form -->
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                 <div class="input-group-append">
                     <button class="btn btn-sidebar">
                         <i class="fas fa-search fa-fw"></i>
@@ -35,6 +35,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
     with font-awesome or any other icon font library -->
+
                 <li class="nav-item">
                     <a asp-action="Dashboard" asp-controller="Admin" class="nav-link">
 
@@ -45,6 +46,16 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Usuarios" class="nav-link">
+                        <i class="nav-icon fas fa-people-arrows"></i>
+                        <p>
+                             Gestionar Usuarios
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a asp-action="Index" asp-controller="Clientes" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
@@ -65,7 +76,7 @@
                     </a>
                 </li>
 
-                
+
                 <li class="nav-item ui-menu-item note-icon-menu-check">
                     <a href="#" class="nav-link ">
                         <i class="nav-icon fas fa-cog"></i>
@@ -87,7 +98,7 @@
                                 <p>Tipo de Mercancia</p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item ui-menu-item note-icon-menu-check">
                             <a href="#" class="nav-link ">
                                 <i class="fas fa-caret-right"></i>
@@ -99,13 +110,13 @@
                             <ul class="nav nav-treeview" style="display: compact;">
 
                                 <a>
-                                
+
                                     <p>
                                         <input placeholder="$ V/L" class="form-control" />
-                                        <a class="btn btn-outline-success" asp-action="Index" asp-controller="Home" ><i class="far fa-save"></i></i></a>
+                                        <a class="btn btn-outline-success" asp-action="Index" asp-controller="Home"><i class="far fa-save"></i>></a>
                                     </p>
                                 </a>
-                                
+
 
                             </ul>
                         </li>
@@ -113,7 +124,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a asp-action="CerrarSesion" asp-controller="Usuarios" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>
                             Cerrar sesión
@@ -122,6 +133,7 @@
                         </p>
                     </a>
                 </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
