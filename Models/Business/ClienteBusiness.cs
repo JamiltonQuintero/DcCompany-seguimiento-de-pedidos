@@ -59,16 +59,17 @@ namespace TallerCuatro.Models.Business
             {
                 _context.Remove(cliente);
                 await _context.SaveChangesAsync();
-
             }
             catch (Exception e)
             {
-
                 throw e;
             }
 
-        }
-
+        }/*
+        public async Task<IEnumerable<ClienteDetalle>> ObtenerClienteDetalleporId(int id)
+        {
+            return await _context.ClienteDetalle.Include(x => x.Paquete).Where(y => y.EmpleadoId == id).ToListAsync();
+        }*/
 
 
 

@@ -19,14 +19,14 @@ namespace TallerCuatro.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
+            /*migrationBuilder.DropIndex(
                 name: "IX_Paquetes_ClienteId",
                 table: "Paquetes");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Paquetes_ClienteId",
                 table: "Paquetes",
-                column: "ClienteId");
+                column: "ClienteId");*/
         }
     }
 }

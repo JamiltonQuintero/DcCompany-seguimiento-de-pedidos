@@ -23,5 +23,7 @@ namespace TallerCuatro.Models.Abstract
 
         Task GuardarPaquete(Paquete paquete);
 
+        Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id);
+
     }
 }

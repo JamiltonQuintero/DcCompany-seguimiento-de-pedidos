@@ -14,10 +14,12 @@ namespace TallerCuatro.Controllers
     public class ClientesController : Controller
     {
         private readonly IClienteBusiness _clienteBusiness;
+        private readonly IPaqueteBusiness _paqueteBusiness;
 
-        public ClientesController(IClienteBusiness clienteBusiness)
+        public ClientesController(IClienteBusiness clienteBusiness, IPaqueteBusiness paqueteBusiness)
         {
             _clienteBusiness = clienteBusiness;
+            _paqueteBusiness = paqueteBusiness;
         }
 
         // GET: Clientes
@@ -35,11 +37,12 @@ namespace TallerCuatro.Controllers
             }
 
             var cliente = await _clienteBusiness.ObtenerClientePorId(id.Value);
-                
+            ViewData["PaquetesCliente"] = await _paqueteBusiness.ObtenerListaPaquetesPorClienteId(id.Value);
             if (cliente == null)
             {
                 return NotFound();
             }
+
 
             return View(cliente);
         }
@@ -47,7 +50,6 @@ namespace TallerCuatro.Controllers
         // GET: Clientes/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["listaClientes"] = new SelectList(await _clienteBusiness.ObtenerListaClientes(), "Numero de casillero", "Nombre", "Correo", "Direcion");
             return View();
         }
 
@@ -132,7 +134,6 @@ namespace TallerCuatro.Controllers
         {
             if (id == null)
             {
-                //return RedirectToAction("Error", "Admin");
                 return Json(new { data = "error", message = "Id no encontrado"});
             }
             try
@@ -142,7 +143,7 @@ namespace TallerCuatro.Controllers
                     //return RedirectToAction("Error", "Admin");
                     return Json(new { data = "error", message = "Cliente a eliminar no existe" });
                 await _clienteBusiness.EliminarCliente(cliente);
-                //return RedirectToAction(nameof(Index));
+                
                 return Json(new { data = "ok", message = "Cliente "+cliente.Nombre+" fue eliminado correctamente" });
             }
             catch (Exception)
