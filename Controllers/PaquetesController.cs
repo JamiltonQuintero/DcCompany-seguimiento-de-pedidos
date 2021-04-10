@@ -78,6 +78,10 @@ namespace TallerCuatro.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PaqueteViewModel paqueteViewModel)
         {
+
+            if (ModelState.IsValid)
+            {
+
             
 
                 if (paqueteViewModel.ClienteId != 0 && paqueteViewModel.Peso != 0 && paqueteViewModel.Imagen != null)
@@ -100,6 +104,7 @@ namespace TallerCuatro.Controllers
                         TransportadoraId = paqueteViewModel.TransportadoraId,
                         TipoMercanciaId = paqueteViewModel.TipoMercanciaId
                     };
+
 
                     string path = Path.Combine(wwwRootPath + "/image/" + nombreImagen);
                     using (var fileStream = new FileStream(path, FileMode.Create))
