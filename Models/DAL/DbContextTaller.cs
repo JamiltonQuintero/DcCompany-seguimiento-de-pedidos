@@ -14,6 +14,15 @@ namespace TallerCuatro.Models.DAL
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Paquete>().HasIndex(s => s.ClienteId).IsUnique(false);
+            /*
+            builder.Entity<TipoMercancia>().HasIndex(s => s.TipoMercanciaId).IsUnique(false);
+            builder.Entity<Transportadora>().HasIndex(s => s.TransportadoraId).IsUnique(false);*/
+            base.OnModelCreating(builder);
+        }
+
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Paquete> Paquetes { get; set; }
         public DbSet<Transportadora> Transportadoras { get; set; }

@@ -46,6 +46,8 @@ namespace TallerCuatro.Models.ViewModels.Usuario
         public List<string> Rol { get; set; }
         public string RolSeleccionado { get; set; }
 
+        public float PrecioPorLibra { get; set; }
+
 
     }
 }

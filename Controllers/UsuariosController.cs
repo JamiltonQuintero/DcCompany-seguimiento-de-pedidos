@@ -75,7 +75,8 @@ namespace TallerCuatro.Controllers
                     UserName = usuarioViewModel.Email,
                     Email = usuarioViewModel.Email,
                     Nombre = usuarioViewModel.Nombre,
-                    Documento = usuarioViewModel.Documento
+                    Documento = usuarioViewModel.Documento,
+                    PrecioPorLibra = usuarioViewModel.PrecioPorLibra
 
                 };
 
@@ -86,7 +87,7 @@ namespace TallerCuatro.Controllers
                     if (result.Succeeded)
                     {
                         TempData["Accion"] = "Crear";
-                        TempData["Mensaje"] = "Usuario creado";
+                        TempData["Mensaje"] = "Usuario creado correctamente";
                         return RedirectToAction("Index");
                     }
 
@@ -138,6 +139,37 @@ namespace TallerCuatro.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Usuarios");
         }
+
+        /*
+        public async Task<IActionResult> _Sidebar()
+        {
+            string usaurioName = HttpContext.User.Identity.Name;
+
+            var usuario = await _userManager.FindByNameAsync(usaurioName);
+
+            UsuarioViewModel usuarioViewModel = new UsuarioViewModel
+            {
+                Nombre = usuario.Nombre
+            };
+
+            return View(usuarioViewModel);
+        }
+        */
+        /*
+        [HttpPost]
+        public async Task<IActionResult> EditarPrecioPorLibra(UsuarioViewModel usuarioViewModel)
+        {
+
+            if (usuarioViewModel.PrecioPorLibra != 0)
+            {
+
+                
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Privacy", "Home");
+        }*/
 
     }
 }

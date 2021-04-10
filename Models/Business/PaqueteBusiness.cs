@@ -29,7 +29,7 @@ namespace TallerCuatro.Models.Business
             return await _context.Clientes.ToListAsync();
          
         }
-
+        
 
         public async Task<IEnumerable<Transportadora>> ObtenerListaTransportadora()
         {
@@ -68,7 +68,8 @@ namespace TallerCuatro.Models.Business
 
             try
             {
-                _context.Add(paquete);
+            
+                _context.Add(paquete);             
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -97,11 +98,28 @@ namespace TallerCuatro.Models.Business
 
             }
         }
+        public async Task EliminarPaquete(Paquete paquete)
+        {
 
+            try
+            {
+                _context.Paquetes.Remove(paquete);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        
 
         private int ObtenerUltimoId()
         {
-            return _context.Paquetes.Count();
+
+            var ultmoId = _context.Paquetes.Count();
+
+            return ultmoId;
         }
 
     }

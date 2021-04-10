@@ -13,5 +13,6 @@ namespace TallerCuatro.Models.Entities
         [StringLength(20, ErrorMessage = "El {0} debe tener al menos {2} y maximo {1} caracteres.", MinimumLength = 8)]
         public string Nombre { get; set; }
         public long Documento { get; set; }
+        public float PrecioPorLibra { get; set; }
     }
 }

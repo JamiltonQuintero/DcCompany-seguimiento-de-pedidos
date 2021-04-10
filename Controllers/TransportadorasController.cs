@@ -26,7 +26,7 @@ namespace TallerCuatro.Controllers
         {
             return View(await _context.Transportadoras.ToListAsync());
         }
-
+        
         // GET: Transportadoras/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -60,6 +60,7 @@ namespace TallerCuatro.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 _context.Add(transportadora);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

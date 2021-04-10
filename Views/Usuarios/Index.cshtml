@@ -102,7 +102,7 @@
     @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Crear")) { <text>
 
               Swal.fire({
-                title: "Crear usuario",
+                title: "¡Felicitaciones!",
                 type: "success",
                 html: "@TempData["Mensaje"]"
               });
@@ -117,7 +117,7 @@
         <text>
 
             Swal.fire({
-                title: "Editar usuario",
+                title: "¡Felicitaciones!",
                 type: "success",
                 html: "@TempData["Mensaje"]"
             });

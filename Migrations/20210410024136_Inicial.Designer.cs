@@ -10,8 +10,8 @@ using TallerCuatro.Models.DAL;
 namespace TallerCuatro.Migrations
 {
     [DbContext(typeof(DbContextTaller))]
-    [Migration("20210409152823_ok2")]
-    partial class ok2
+    [Migration("20210410024136_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -283,8 +283,7 @@ namespace TallerCuatro.Migrations
 
                     b.HasKey("PaqueteId");
 
-                    b.HasIndex("ClienteId")
-                        .IsUnique();
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("TipoMercanciaId");
 
@@ -334,6 +333,9 @@ namespace TallerCuatro.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
+
+                    b.Property<float>("PrecioPorLibra")
+                        .HasColumnType("real");
 
                     b.HasDiscriminator().HasValue("UsuarioIdentity");
                 });

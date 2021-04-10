@@ -78,7 +78,7 @@ namespace TallerCuatro.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PaqueteViewModel paqueteViewModel)
         {
-          
+            
 
                 if (paqueteViewModel.ClienteId != 0 && paqueteViewModel.Peso != 0 && paqueteViewModel.Imagen != null)
                 {
@@ -222,7 +222,7 @@ namespace TallerCuatro.Controllers
             }
             return Json(new { data = "ok" });
         }
-        /*
+        
         // GET: Paquetes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -231,17 +231,15 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var paquete = await _context.Paquetes
-                .Include(p => p.Cliente)
-                .FirstOrDefaultAsync(m => m.PaqueteId == id);
+            var paquete = await _paqueteBusiness.ObtenerPaquetePorId(id.Value);            
             if (paquete == null)
             {
                 return NotFound();
             }
-
-            return View(paquete);
+            await _paqueteBusiness.EliminarPaquete(paquete);
+            return RedirectToAction(nameof(Index));
         }
-
+        /*
         // POST: Paquetes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

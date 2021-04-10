@@ -281,8 +281,7 @@ namespace TallerCuatro.Migrations
 
                     b.HasKey("PaqueteId");
 
-                    b.HasIndex("ClienteId")
-                        .IsUnique();
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("TipoMercanciaId");
 
@@ -332,6 +331,9 @@ namespace TallerCuatro.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
+
+                    b.Property<float>("PrecioPorLibra")
+                        .HasColumnType("real");
 
                     b.HasDiscriminator().HasValue("UsuarioIdentity");
                 });
