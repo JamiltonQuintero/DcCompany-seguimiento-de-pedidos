@@ -79,11 +79,7 @@ namespace TallerCuatro.Controllers
         public async Task<IActionResult> Create(PaqueteViewModel paqueteViewModel)
         {
 
-            if (ModelState.IsValid)
-            {
-
-            
-
+           
                 if (paqueteViewModel.ClienteId != 0 && paqueteViewModel.Peso != 0 && paqueteViewModel.Imagen != null)
                 {
 
@@ -146,7 +142,7 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            PaqueteViewModel paqueteViewModel = new PaqueteViewModel
+            PaqueteViewModel paqueteViewModel = new PaqueteViewModel                             
             {
                 CodigoMIA = paquete.CodigoMIA,
                 Peso = paquete.Peso,
