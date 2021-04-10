@@ -64,11 +64,7 @@ namespace TallerCuatro.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                 _context.Add(paquete);
-                await _context.SaveChangesAsync();
-
-                
+ 
 
                 await _paqueteBusiness.GuardarPaquete(paquete);
 

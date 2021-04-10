@@ -29,30 +29,30 @@
             <div class="row">
                 <div class="col-md-6">
                     <form asp-action="Edit">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="ClienteId" />
+                        <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>-->
                         <div class="form-group">
                             <label asp-for="ClienteId" class="control-label"></label>
-                            <input asp-for="ClienteId" class="form-control" id="ClienteId" name="ClienteId" />
+                            <input asp-for="ClienteId" class="form-control" id="clienteId" name="ClienteId" disabled/>
+                            <!--<input type="hidden" asp-for="ClienteId" />-->
                             <span asp-validation-for="ClienteId" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Nombre" class="control-label"></label>
-                            <input asp-for="Nombre" class="form-control" id="Nombre" name="Nombre" />
+                            <input asp-for="Nombre" class="form-control" id="nombre" name="Nombre" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Correo" class="control-label"></label>
-                            <input asp-for="Correo" class="form-control" id="Correo" name="Correo" />
+                            <input asp-for="Correo" class="form-control" id="correo" name="Correo" />
                             <span asp-validation-for="Correo" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Direccion" class="control-label"></label>
-                            <input asp-for="Direccion" class="form-control" id="Direccion" name="Direccion" />
+                            <input asp-for="Direccion" class="form-control" id="direccion" name="Direccion" />
                             <span asp-validation-for="Direccion" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Edit" class="btn btn-primary" />
+                            <input type="button" value="Editar" class="btn btn-primary" onclick="Editar()" />
                         </div>
                     </form>
                 </div>
@@ -62,24 +62,108 @@
                 <a asp-action="Index">Volver</a>
             </div>
 
-
-
-
-
-
-            </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
 </div>
-<!-- /.content-wrapper -->
-
-
-
-
-
+<!-- /.content -->
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+   
+
+    <script>
+    function Editar() {
+
+        var isValid = true;
+        if (document.getElementById("nombre").value == '') {
+            $('#nombre').siblings('span.text-danger').text('El nombre es requerido');
+            isValid = false;
+        } else {
+            $('#nombre').siblings('span.text-danger').text('');
+        }
+
+        if (document.getElementById("correo").value == '') {
+            $('#correo').siblings('span.text-danger').text('El correo electrónico  es requerido');
+            isValid = false;
+        } else {
+            if (!validaEmail($('#correo').val())) {
+                $('#correo').siblings('span.text-danger').text('Correo electrónico inválido');
+                isValid = false;
+            } else {
+                $('#correo').siblings('span.text-danger').text('');
+            }
+        }
+
+        if (document.getElementById("direccion").value == '') {
+            $('#direccion').siblings('span.text-danger').text('La dirección es requerida');
+            isValid = false;
+        } else {
+            $('#direccion').siblings('span.text-danger').text('');
+        }
+
+        if (isValid) {
+            Swal.fire({ //Mensaje de confirmar
+                title: '¿Desea editar el cliente?',
+                //showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Editar`,
+                cancelButtonText: `Cancelar`,
+                reverseButtons: true
+            }).then((result) => {
+
+                if (result.isConfirmed) { // si confirmamos
+                    var formData = new FormData(); //se crea el ojeto de tipo formData que va a contener todo lo que vamos a enviar
+                    formData.append("ClienteId", document.getElementById("clienteId").value);
+                    formData.append("Nombre", document.getElementById("nombre").value);
+                    formData.append("Correo", document.getElementById("correo").value);
+                    formData.append("Direccion", document.getElementById("direccion").value);
+
+                     $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("Edit","Clientes")',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (result) {
+
+                                if (result.data == "ok") {
+                                    setTimeout(
+                                        function () {
+                                            window.location.href = "@Url.Action("Index","Clientes")";
+                                        }, 2000);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Cliente editado',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                } else {
+                                    console.log("ERROR!!")
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Ocurrió un error al editar el cliente',
+                                    })
+                                }
+                            },
+                            error: function (err) {
+                                console.log(err.data)
+                            }
+                     });
+
+                } else if (result.isDenied) {
+                    Swal.fire('Cliente no editado', '', 'info')
+                }
+            })
+        }
+
+
+    }
+
+    function validaEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
+    </script>
+
 }
