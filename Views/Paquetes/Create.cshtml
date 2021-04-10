@@ -1,5 +1,4 @@
-﻿@model TallerCuatro.Models.Entities.Paquete
-
+﻿@model TallerCuatro.Models.ViewModels.PaqueteViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -38,7 +37,13 @@
 
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                       
+
+                        <div class="form-group">
+
+
+                            <label asp-for="ClienteId" class="control-label"></label>
+                            <select asp-for="ClienteId" id="cliente" class="form-control" asp-items="ViewBag.listaClientes"></select>
+                        </div>
 
                         <div class="form-group">
                             <label asp-for="Peso" class="control-label"></label>
@@ -47,54 +52,48 @@
                         </div>
 
                         <div class="form-group">
-
-
-                            <label asp-for="ClienteId" class="control-label"></label>
-                            <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
-                        </div>
-
-                        <div class="form-group">
                             <label asp-for="Estado" class="control-label"></label>
-                            <input asp-for="Estado" class="form-control" />
+                            <input asp-for="Estado" id="estado" class="form-control" />
                             <span asp-validation-for="Estado" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="NombreImagen" class="control-label"></label>
-                            <input asp-for="NombreImagen" class="form-control" />
-                            <span asp-validation-for="NombreImagen" class="text-danger"></span>
+                            <label asp-for="Imagen" for="imagen" class="control-label"></label>
+                            <br />
+                            <input asp-for="Imagen" type="file" id="imagen" name="imagen" accept="image/*" />
+                            <span asp-validation-for="Imagen" class="error text-danger"></span>
                         </div>
 
                         <div class="form-group">
 
 
                             <label asp-for="TransportadoraId" class="control-label"></label>
-                            <select asp-for="TransportadoraId" class="form-control" asp-items="ViewBag.TransportadoraId"></select>
+                            <select asp-for="TransportadoraId" id="transportadora" class="form-control" asp-items="ViewBag.listaTransportadoras"></select>
                         </div>
 
                         <div class="form-group">
 
 
                             <label asp-for="TipoMercanciaId" class="control-label"></label>
-                            <select asp-for="TipoMercanciaId" class="form-control" asp-items="ViewBag.TipoMercanciaId"></select>
+                            <select asp-for="TipoMercanciaId" id="tipoMercancia" class="form-control" asp-items="ViewBag.listaTipomercancias"></select>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="GuiaColombia" class="control-label"></label>
-                            <input asp-for="GuiaColombia" class="form-control" />
+                            <input asp-for="GuiaColombia" id="guiaColombia" class="form-control" />
                             <span asp-validation-for="GuiaColombia" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="ValorAPAgar" class="control-label"></label>
-                            <input asp-for="ValorAPAgar" class="form-control" require="false" value="0"/>
-                            
+                            <input asp-for="ValorAPAgar" id="valorAPagar" class="form-control" require="false" value="0" />
+
                         </div>
-                       
+
 
                         <br />
                         <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <input type="button" value="Crear" id="crearPaquete" name="crearPaquete" class="btn btn-primary" />
                         </div>
                     </form>
 
@@ -110,15 +109,79 @@
 
 @section Scripts{
 
+ 
     <script>
 
-        function calcularTotalAPagar() {
+        $(document).ready(function () {
 
-            var peso = document.getElementById("peso").value;
+            $("#crearPaquete").click(function () {
 
-            return peso * 100
 
-        }
+
+                Swal.fire({ //Mensaje de confirmar
+                    title: '¿Desea guardar el paquete del cliente?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Guardar`,
+                denyButtonText: `No guardar`,
+            }).then((result) => {
+
+                if (result.isConfirmed) { // si confirmamos
+
+                    var url = $(this).data('url');
+                    var imagen = $("#imagen").prop("files");
+                    var formData = new FormData();
+                    formData.append("Peso", document.getElementById("peso").value);
+                    formData.append("ClienteId", document.getElementById("cliente").value);
+                    formData.append("Estado", document.getElementById("estado").value);
+                    formData.append("TransportadoraId", document.getElementById("transportadora").value);
+                    formData.append("TipoMercanciaId", document.getElementById("tipoMercancia").value);
+                    formData.append("GuiaColombia", document.getElementById("guiaColombia").value);
+                    formData.append("ValorAPAgar", document.getElementById("valorAPagar").value);
+                    formData.append("Imagen", imagen[0]);
+
+
+                    $.ajax({
+                            type: "POST",
+                            //url: "../Cargos/CrearCargo",
+                            url: '@Url.Action("Create", "Paquetes")',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (result) {
+                                //console.log(result.data);
+                                //alert(result.data);
+                                if (result.data == "ok") {
+                                    setTimeout(
+                                        function () {
+                                            window.location.href = "@Url.Action("Index", "Paquetes")";
+                                        }, 2000);
+                                    Swal.fire({
+                                        //position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Paquete guardado',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                } else {
+                                    console.log("ERROR!!")
+
+                                }
+                            },
+                            error: function (err) {
+
+                                console.log(err.data)
+                            }
+                        });
+
+                } else if (result.isDenied) {
+                    Swal.fire('Cargo no guardado', '', 'info')
+                }
+            })
+
+            })
+
+        })
 
     </script>
 

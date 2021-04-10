@@ -1,0 +1,128 @@
+﻿@model IEnumerable<TallerCuatro.Models.ViewModels.Usuario.UsuarioViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+
+
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Usuarios</h1>
+                    <p>
+                        <a asp-action="CrearUsuario" asp-controller="Usuarios">Crear nuevo usuario</a>
+                    </p>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                        <li class="breadcrumb-item active">Usuarios</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-11 align-self-center text-center">
+                    <table id="tabla" class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Documento)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Nombre)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Email)
+                                </th>
+                               
+                                <th>Rol</th>
+
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var usuario in Model)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => usuario.Documento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => usuario.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => usuario.Email)
+                                </td>
+
+                                <td>
+                                    @string.Join(" ", usuario.Rol.ToList())
+                                </td>
+
+                                <td>
+                                    <form asp-action="eliminar" asp-route-id="@usuario.Id" method="post">
+                                        <span id=""></span>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar el usuario?')">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.col-md-6 -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+@section Scripts{
+
+    <script src="~/js/tabla.js"></script>
+    <script>
+
+    @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Crear")) { <text>
+
+              Swal.fire({
+                title: "¡Felicitaciones!",
+                type: "success",
+                html: "@TempData["Mensaje"]"
+              });
+
+             </text>
+    }
+
+
+
+    @if (TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Editar"))
+    {
+        <text>
+
+            Swal.fire({
+                title: "¡Felicitaciones!",
+                type: "success",
+                html: "@TempData["Mensaje"]"
+            });
+
+        </text>
+    }
+    </script>
+}

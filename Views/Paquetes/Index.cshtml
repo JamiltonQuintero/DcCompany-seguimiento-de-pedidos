@@ -84,9 +84,9 @@
                             @Html.DisplayFor(modelItem => item.Estado)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.PaqueteId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.PaqueteId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.PaqueteId">Delete</a>
+                            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.PaqueteId"><i class="fas fa-user-edit"></i> Editar</a> |
+                            <a class="btn btn-success" asp-action="Details" asp-route-id="@item.PaqueteId"><i class="fas fa-info-circle"></i> Detalle</a> |
+                            <a class="m1-1 btn btn-danger" onclick="return confirm('¿Desea eliminar el registro?')" asp-action="Delete" asp-route-id="@item.PaqueteId"><i class="fas fa-user-minus"></i> Eliminar</a>
                         </td>
                     </tr>
                     }
