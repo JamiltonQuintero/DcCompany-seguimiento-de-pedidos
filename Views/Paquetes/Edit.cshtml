@@ -1,37 +1,200 @@
-﻿@model TallerCuatro.Models.Entities.Paquete
+﻿@model TallerCuatro.Models.ViewModels.PaqueteViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+section Styles{
 
-<h4>Paquete</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PaqueteId" />
-            <div class="form-group">
-               
-            </div>
-            <div class="form-group">
-                <label asp-for="ClienteId" class="control-label"></label>
-                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
-                <span asp-validation-for="ClienteId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Editar paquete</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Paquetes">Gestión Paquetes</a></li>
+                        <li class="breadcrumb-item active">Editar Paquete</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
-</div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
 
-<div>
-    <a asp-action="Index">Back to List</a>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Edit">
+                               
+
+                                <input id="codigo" name="codigo" type="hidden" asp-for="CodigoMIA" />
+
+                                <div class="form-group">
+                                    <label asp-for="ClienteId" class="control-label"></label>
+                                    <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.listaClientes"></select>
+                                    <span asp-validation-for="ClienteId" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Peso" class="control-label"></label>
+                                    <input asp-for="Peso" class="form-control" id="peso" />
+                                    <span asp-validation-for="Peso" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Estado" class="control-label"></label>
+                                    <input asp-for="Estado" id="estado" class="form-control" />
+                                    <span asp-validation-for="Estado" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-9">
+                                        <img src="@("~/image/" + Model.NombreImagen)" asp-append-version="true" width="250" height="250" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Imagen" for="imagen" class="control-label"></label>
+                                    <br />
+                                    <input type="file" id="imagen" name="imagen" accept="image/*" />
+                                    <span asp-validation-for="Imagen" class="error text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <label asp-for="TransportadoraId" class="control-label"></label>
+                                    <select asp-for="TransportadoraId" id="transportadora" class="form-control" asp-items="ViewBag.listaTransportadoras"></select>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <label asp-for="TipoMercanciaId" class="control-label"></label>
+                                    <select asp-for="TipoMercanciaId" id="tipoMercancia" class="form-control" asp-items="ViewBag.listaTipomercancias"></select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="GuiaColombia" class="control-label"></label>
+                                    <input asp-for="GuiaColombia" id="guiaColombia" class="form-control" />
+                                    <span asp-validation-for="GuiaColombia" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="ValorAPAgar" class="control-label"></label>
+                                    <input asp-for="ValorAPAgar" id="valorAPagar" class="form-control" require="false" />
+
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="button" value="Editar" id="editarPaquete" name="editarPaquete" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a asp-action="Index">Regresar</a>
+                    </div>
+
+                </div>
+                <!-- /.col-md-6 -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
 </div>
+<!-- /.content-wrapper -->
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#editarPaquete").click(function () {
+                
+                Swal.fire({ //Mensaje de confirmar
+                    title: '¿Desea guardar el paquete del cliente?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Guardar`,
+                denyButtonText: `No guardar`,
+            }).then((result) => {
+
+                if (result.isConfirmed) { // si confirmamos
+
+                    var url = $(this).data('url');
+                    var imagen = $("#imagen").prop("files");
+                    var formData = new FormData();
+                    formData.append("CodigoMIA", document.getElementById("codigo").value);
+                    formData.append("Peso", document.getElementById("peso").value);
+                    formData.append("ClienteId", document.getElementById("cliente").value);
+                    formData.append("Estado", document.getElementById("estado").value);
+                    formData.append("TransportadoraId", document.getElementById("transportadora").value);
+                    formData.append("TipoMercanciaId", document.getElementById("tipoMercancia").value);
+                    formData.append("GuiaColombia", document.getElementById("guiaColombia").value);
+                    formData.append("ValorAPAgar", document.getElementById("valorAPagar").value);
+                    if (document.getElementById("NombreImagen") != null)
+                        formData.append("NombreImagen", document.getElementById("NombreImagen").value);
+                                formData.append("Imagen", imagen[0]);
+
+                    
+
+                    $.ajax({
+                            type: "POST",
+                            //url: "../Cargos/CrearCargo",
+                            url: '@Url.Action("Edit", "Paquetes")',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (result) {
+                                //console.log(result.data);
+                                //alert(result.data);
+                                if (result.data == "ok") {
+                                    setTimeout(
+                                        function () {
+                                            window.location.href = "@Url.Action("Index", "Paquetes")";
+                                        }, 2000);
+                                    Swal.fire({
+                                        //position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Paquete guardado',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                } else {
+                                    console.log("ERROR!!")
+
+                                }
+                            },
+                            error: function (err) {
+
+                                console.log(err.data)
+                            }
+                        });
+
+                } else if (result.isDenied) {
+                    Swal.fire('Cargo no guardado', '', 'info')
+                }
+            })
+
+            })
+
+        })
+
+    </script>
 }
