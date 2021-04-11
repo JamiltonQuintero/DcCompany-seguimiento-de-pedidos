@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.DAL;
 using TallerCuatro.Models.Entities;
+using TallerCuatro.Models.ViewModels.Admin;
 
 namespace TallerCuatro.Models.Business
 {
@@ -110,7 +111,21 @@ namespace TallerCuatro.Models.Business
 
             }
         }
+        
+        public ReporteDashboardViewModel ReporteDashboar()
+        {
+            ReporteDashboardViewModel reporte = new ReporteDashboardViewModel
+            {
+                TotCliente = _context.Clientes.Count(),
+                TotPaquete = _context.Paquetes.Count(),
+                TotUsuario = _context.UsuariosIdentity.Count(),
+                TotTransportadora = _context.Transportadoras.Count(),
+                TotTipoMercancia = _context.TiposMercancias.Count(),
+                TotRol = _context.Roles.Count()
+            };
 
+            return reporte;
+        }
 
         public async Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id)
         {

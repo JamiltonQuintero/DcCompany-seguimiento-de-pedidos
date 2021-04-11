@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.Entities;
 using TallerCuatro.Models.ViewModels.Admin;
 
@@ -15,16 +16,21 @@ namespace TallerCuatro.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<UsuarioIdentity> _userManager;
+        private readonly IPaqueteBusiness _paqueteBusiness;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<UsuarioIdentity> userManager)
+
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<UsuarioIdentity> userManager, IPaqueteBusiness paqueteBusiness)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _paqueteBusiness = paqueteBusiness;
+ 
         }
 
         public IActionResult Dashboard()
         {
-            return View();
+            var reporte = _paqueteBusiness.ReporteDashboar();
+            return View(reporte);
         }
 
         public IActionResult CrearRol()

@@ -17,15 +17,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Usuarios</h1>
-                    <p>
-                        <a asp-action="CrearRol" asp-controller="Admin">Crear nuevo Rol</a>
-                    </p>
+                    <h1 class="m-0">Crear Rol</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                        <li class="breadcrumb-item active">Usuarios</li>
+                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+                        <li class="breadcrumb-item active">Gestionar Rol</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -33,47 +30,45 @@
     </div>
     <!-- /.content-header -->
     <!-- Main content -->
+
     <div class="content">
-
         <div class="container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-lg-11 align-self-center text-center">
-                    <table id="tabla" class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Id)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Name)
-                                </th>
+            <p>
+                <a class="btn btn-outline-success" asp-action="CrearRol"><i class="fa fa-plus-circle"></i> Crear nuevo rol</a>
+            </p>
 
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var rol in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => rol.Id)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => rol.Name)
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-secondary" asp-action="EditarRol" asp-route-id="@rol.Id"><i class="fas fa-user-edit"></i> Editar</a> |
+            <table id="tabla" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
 
-                                        <a class="m1-1 btn btn-danger" onclick="return confirm('¿Desea eliminar el registro?')" asp-action="EliminarRol" asp-route-id="@rol.Id"><i class="fas fa-user-minus"></i> Eliminar</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.col-md-6 -->
-            </div>
-            <!-- /.row -->
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rol in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => rol.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => rol.Name)
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary" asp-action="EditarRol" asp-route-id="@rol.Id"><i class="fas fa-user-edit"></i> Editar</a> |
+
+                                <a class="m1-1 btn btn-danger" onclick="return confirm('¿Desea eliminar el registro?')" asp-action="EliminarRol" asp-route-id="@rol.Id"><i class="fas fa-user-minus"></i> Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->

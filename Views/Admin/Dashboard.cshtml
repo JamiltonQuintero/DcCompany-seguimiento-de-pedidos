@@ -1,4 +1,6 @@
-﻿@section Styles{
+﻿@model TallerCuatro.Models.ViewModels.Admin.ReporteDashboardViewModel
+
+@section Styles{
 
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -47,14 +49,14 @@
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <p>Total Paquetes</p>
 
-                            <p>New Orders</p>
+                            <h3>@Model.TotPaquete</h3>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-bag"></i>
+                            <i class="fas fa-box-open"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a asp-action="Index" asp-controller="Paquetes" class="small-box-footer">Ver Paquetes <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -62,14 +64,14 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>53<sup style="font-size: 20px">%</sup></h3>
+                            <p>Total Clientes</p>
 
-                            <p>Bounce Rate</p>
+                            <h3>@Model.TotCliente</h3>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
+                            <i class="fas fa-user-tie"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a asp-action="Index" asp-controller="Clientes" class="small-box-footer">Ver Clientes <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -77,14 +79,14 @@
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>44</h3>
+                            <p>total usuarios</p>
 
-                            <p>User Registrations</p>
+                            <h3>@Model.TotUsuario</h3>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-person-add"></i>
+                            <i class="fas fa-user-lock"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a asp-action="Index" asp-controller="Usuarios" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -92,9 +94,9 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>65</h3>
+                            <p>Total Roles</p>
 
-                            <p>Unique Visitors</p>
+                            <h3>@Model.TotRol</h3>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
