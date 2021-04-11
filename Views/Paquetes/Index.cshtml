@@ -104,6 +104,34 @@
 
     <script src="~/js/Tabla.js"></script>
 
+    <script>
+
+        @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("EliminarOk")) { <text>
+
+              Swal.fire({
+                title: "¡Felicitaciones!",
+                type: "success",
+                html: "@TempData["Mensaje"]"
+              });
+
+             </text>
+    }
+
+       
+
+         @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("EliminarNo")) { <text>
+
+              Swal.fire({
+                title: "¡Lo sentimos!",
+                type: "success",
+                html: "@TempData["Mensaje"]"
+              });
+
+             </text>
+    }
+
+    </script>
+
 }
 
 

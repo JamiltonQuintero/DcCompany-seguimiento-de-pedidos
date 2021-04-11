@@ -237,8 +237,31 @@ namespace TallerCuatro.Controllers
             {
                 return NotFound();
             }
-            await _paqueteBusiness.EliminarPaquete(paquete);
-            return RedirectToAction(nameof(Index));
+
+            try
+            {
+                await _paqueteBusiness.EliminarPaquete(paquete);
+
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                //borramos la foto anterior
+                string imagenAnterior = null;
+                if (paquete.NombreImagen != null)
+                    imagenAnterior = Path.Combine(wwwRootPath, "image", paquete.NombreImagen);
+
+                if (System.IO.File.Exists(imagenAnterior))
+                    System.IO.File.Delete(imagenAnterior);
+                TempData["Accion"] = "EliminarOk";
+                TempData["Mensaje"] = "Paquete eliminado";
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                TempData["Accion"] = "EliminarNo";
+                TempData["Mensaje"] = "No se pudo eliminar el paquete";
+                return RedirectToAction(nameof(Index));
+            }
+            
         }
         /*
         // POST: Paquetes/Delete/5
