@@ -59,27 +59,23 @@ namespace TallerCuatro.Models.Business
 
         public async Task GuardarPaquete(Paquete paquete)
         {
-           
-
-            if (paquete.ValorAPAgar == 0)
-            {
-                paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
-            }
-
+   
             try
             {
-            
-
-                _context.Add(paquete);
-                paquete.CodigoMIA = ("MIA-" + await ObtenerUltimoId());
-                _context.Update(paquete);
+                
+                if (paquete.ValorAPAgar == 0)
+                {
+                    paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
+                }
+                _context.Add(paquete);         
                 await _context.SaveChangesAsync();
+                paquete.CodigoMIA = ("MIA-" + paquete.PaqueteId);
+                await EditarPaquete(paquete);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.InnerException.Message);
             }
-
            
         }
 
@@ -115,37 +111,6 @@ namespace TallerCuatro.Models.Business
             }
         }
 
-        private async Task<int> ObtenerUltimoId()
-        {
-            int ultmoId = 0;
-            var lista = await _context.Paquetes.ToListAsync(); 
-
-            if (lista.Count > 0)
-            {
-             
-                var totalElementos = 0;
-
-                foreach (var item in lista)
-                {
-                    totalElementos++;
-
-                    if (lista.Count == totalElementos)
-                    {
-
-                        return item.PaqueteId + 1;
-                    }
-
-
-                }
-
-            }else
-            {
-                return 1;
-            }
-            
-
-            return ultmoId;
-        }
 
         public async Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id)
         {
