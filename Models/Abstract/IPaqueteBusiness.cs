@@ -31,5 +31,6 @@ namespace TallerCuatro.Models.Abstract
 
         ReporteDashboardViewModel ReporteDashboar();
 
+
     }
 }

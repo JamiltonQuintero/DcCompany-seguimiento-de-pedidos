@@ -37,12 +37,33 @@
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
+                            <div class="form-group">
+                                <label asp-for="Rut" class="control-label"></label>
+                                <input asp-for="Rut" class="form-control" />
+                                <span asp-validation-for="Rut" class="text-danger"></span>
+                            </div>
                             <label asp-for="Nombre" class="control-label"></label>
                             <input asp-for="Nombre" class="form-control" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <label asp-for="CiudadSede" class="control-label"></label>
+                            <input asp-for="CiudadSede" class="form-control" />
+                            <span asp-validation-for="CiudadSede" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Direccion" class="control-label"></label>
+                            <input asp-for="Direccion" class="form-control" />
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Telefono" class="control-label"></label>
+                            <input asp-for="Telefono" class="form-control" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="submit" value="Crear" class="btn btn-primary" />
                         </div>
                     </form>
 
@@ -58,6 +79,3 @@
 
 @section Scripts{
 }
-
-
-

@@ -16,7 +16,7 @@ using TallerCuatro.Models.ViewModels;
 namespace TallerCuatro.Controllers
 {
 
-   
+
 
     public class PaquetesController : Controller
     {
@@ -32,14 +32,14 @@ namespace TallerCuatro.Controllers
         }
 
         // GET: Paquetes
-        
+
         public async Task<IActionResult> Index()
         {
 
             var paquetes = _paqueteBusiness.ObtenerListaPaquetes();
 
             return View(await paquetes);
-           
+
         }
 
         // GET: Paquetes/Details/5
@@ -63,11 +63,11 @@ namespace TallerCuatro.Controllers
         public async Task<IActionResult> Create()
         {
 
-            
-            ViewData["listaClientes"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre") ;
+
+            ViewData["listaClientes"] = new SelectList(await _paqueteBusiness.ObtenerListaClientes(), "ClienteId", "Nombre");
             ViewData["listaTransportadoras"] = new SelectList(await _paqueteBusiness.ObtenerListaTransportadora(), "TransportadoraId", "Nombre");
             ViewData["listaTipomercancias"] = new SelectList(await _paqueteBusiness.ObtenerListaTipoMercancia(), "TipoMercanciaId", "Nombre");
-           
+
             return View();
         }
 
@@ -79,55 +79,53 @@ namespace TallerCuatro.Controllers
         public async Task<IActionResult> Create(PaqueteViewModel paqueteViewModel)
         {
 
-           
-                if (paqueteViewModel.ClienteId != 0 && paqueteViewModel.Peso != 0 && paqueteViewModel.Imagen != null)
-                {
+            if (paqueteViewModel.ClienteId != 0 && paqueteViewModel.Peso != 0 && paqueteViewModel.Imagen != null)
+            {
 
-                    string wwwRootPath = _hostEnvironment.WebRootPath;
-                    string nombreImagen = Path.GetFileNameWithoutExtension(paqueteViewModel.Imagen.FileName);
-                    string extension = Path.GetExtension(paqueteViewModel.Imagen.FileName);
-                    nombreImagen = nombreImagen + DateTime.Now.ToString("yymmssfff") + extension;
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string nombreImagen = Path.GetFileNameWithoutExtension(paqueteViewModel.Imagen.FileName);
+                string extension = Path.GetExtension(paqueteViewModel.Imagen.FileName);
+                nombreImagen = nombreImagen + DateTime.Now.ToString("yymmssfff") + extension;
 
                 Paquete paquete = new Paquete
                 {
-                        CodigoMIA = "",
-                        Peso = paqueteViewModel.Peso,
-                        NombreImagen = nombreImagen,
-                        Estado = paqueteViewModel.Estado,
-                        GuiaColombia = paqueteViewModel.GuiaColombia,
-                        ValorAPAgar = paqueteViewModel.ValorAPAgar,
-                        ClienteId = paqueteViewModel.ClienteId,
-                        TransportadoraId = paqueteViewModel.TransportadoraId,
-                        TipoMercanciaId = paqueteViewModel.TipoMercanciaId
-                    };
+                    CodigoMIA = "",
+                    Peso = paqueteViewModel.Peso,
+                    NombreImagen = nombreImagen,
+                    Estado = paqueteViewModel.Estado,
+                    GuiaColombia = paqueteViewModel.GuiaColombia,
+                    ValorAPAgar = paqueteViewModel.ValorAPAgar,
+                    ClienteId = paqueteViewModel.ClienteId,
+                    TransportadoraId = paqueteViewModel.TransportadoraId,
+                    TipoMercanciaId = paqueteViewModel.TipoMercanciaId
+                };
 
 
-                    string path = Path.Combine(wwwRootPath + "/image/" + nombreImagen);
-                    using (var fileStream = new FileStream(path, FileMode.Create))
-                    {
-                        await paqueteViewModel.Imagen.CopyToAsync(fileStream);
-                    }
-                    try
-                    {
-                        await _paqueteBusiness.GuardarPaquete(paquete);
-                        return Json(new { data = "ok" });
-                    }
-                    catch (Exception )
-
-                    {
-                    
-                        return Json(new { data = "error" });
-                    }
-                        
+                string path = Path.Combine(wwwRootPath + "/image/" + nombreImagen);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await paqueteViewModel.Imagen.CopyToAsync(fileStream);
                 }
-                return Json(new { data = "error" });
-       
+                try
+                {
+                    await _paqueteBusiness.GuardarPaquete(paquete);
+                    return Json(new { data = "ok" });
+                }
+                catch (Exception)
 
-          /*
-            return View(paquete);*/
+
+                    return Json(new { data = "error" });
+                }
+
+            }
+            return Json(new { data = "error" });
+
+
+            /*
+              return View(paquete);*/
         }
 
-        
+
         // GET: Paquetes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -185,7 +183,7 @@ namespace TallerCuatro.Controllers
                     if (System.IO.File.Exists(imagenAnterior))
                         System.IO.File.Delete(imagenAnterior);
 
-                    
+
                     string nombreImagen = Path.GetFileNameWithoutExtension(paqueteViewModel.Imagen.FileName);
                     string extension = Path.GetExtension(paqueteViewModel.Imagen.FileName);
                     paqueteViewModel.NombreImagen = nombreImagen = nombreImagen + DateTime.Now.ToString("yymmssfff") + extension;
@@ -197,25 +195,27 @@ namespace TallerCuatro.Controllers
                     }
                     paquete.NombreImagen = paqueteViewModel.NombreImagen;
 
-                } else
+                }
+                else
                 {
                     paquete.NombreImagen = paqueteViewModel.NombreImagen;
                 }
 
-                    paquete.CodigoMIA = paqueteViewModel.CodigoMIA;
-                    paquete.Peso = paqueteViewModel.Peso;
-                    paquete.Estado = paqueteViewModel.Estado;
-                    paquete.GuiaColombia = paqueteViewModel.GuiaColombia;
-                    paquete.ValorAPAgar = paqueteViewModel.ValorAPAgar;
-                    paquete.ClienteId = paqueteViewModel.ClienteId;
-                    paquete.TransportadoraId = paqueteViewModel.TransportadoraId;
-                    paquete.TipoMercanciaId = paqueteViewModel.TipoMercanciaId;
+                paquete.CodigoMIA = paqueteViewModel.CodigoMIA;
+                paquete.Peso = paqueteViewModel.Peso;
+                paquete.Estado = paqueteViewModel.Estado;
+                paquete.GuiaColombia = paqueteViewModel.GuiaColombia;
+                paquete.ValorAPAgar = paqueteViewModel.ValorAPAgar;
+                paquete.ClienteId = paqueteViewModel.ClienteId;
+                paquete.TransportadoraId = paqueteViewModel.TransportadoraId;
+                paquete.TipoMercanciaId = paqueteViewModel.TipoMercanciaId;
 
                 try
                 {
                     await _paqueteBusiness.EditarPaquete(paquete);
                     return Json(new { data = "ok" });
-                }catch (Exception)
+                }
+                catch (Exception)
                 {
                     return Json(new { data = "error" });
                 }
@@ -223,7 +223,7 @@ namespace TallerCuatro.Controllers
             }
             return Json(new { data = "ok" });
         }
-        
+
         // GET: Paquetes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -232,7 +232,7 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var paquete = await _paqueteBusiness.ObtenerPaquetePorId(id.Value);            
+            var paquete = await _paqueteBusiness.ObtenerPaquetePorId(id.Value);
             if (paquete == null)
             {
                 return NotFound();
@@ -261,23 +261,8 @@ namespace TallerCuatro.Controllers
                 TempData["Mensaje"] = "No se pudo eliminar el paquete";
                 return RedirectToAction(nameof(Index));
             }
-            
-        }
-        /*
-        // POST: Paquetes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var paquete = await _context.Paquetes.FindAsync(id);
-            _context.Paquetes.Remove(paquete);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool PaqueteExists(int id)
-        {
-            return _context.Paquetes.Any(e => e.PaqueteId == id);
-        }*/
+        }
+        
     }
 }

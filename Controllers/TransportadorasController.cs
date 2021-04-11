@@ -6,27 +6,27 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.DAL;
 using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Controllers
 {
-   
     public class TransportadorasController : Controller
     {
-        private readonly DbContextTaller _context;
+        private readonly ITransportadoraBusiness _transportadoraBusiness;
 
-        public TransportadorasController(DbContextTaller context)
+        public TransportadorasController(ITransportadoraBusiness transportadoraBusiness)
         {
-            _context = context;
+            _transportadoraBusiness = transportadoraBusiness;
         }
 
         // GET: Transportadoras
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Transportadoras.ToListAsync());
+            return View(await _transportadoraBusiness.ObtenerListaTransportadoras());
         }
-        
+
         // GET: Transportadoras/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -35,8 +35,8 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var transportadora = await _context.Transportadoras
-                .FirstOrDefaultAsync(m => m.TransportadoraId == id);
+            var transportadora = await _transportadoraBusiness.ObtenerTransportadoraPorId(id.Value);            
+           
             if (transportadora == null)
             {
                 return NotFound();
@@ -46,8 +46,9 @@ namespace TallerCuatro.Controllers
         }
 
         // GET: Transportadoras/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewData["listaTransportadoras"] = new SelectList(await _transportadoraBusiness.ObtenerListaTransportadoras(),"Rut", "Nombre", "Telefono", "Ciudad de sede principal");
             return View();
         }
 
@@ -55,15 +56,16 @@ namespace TallerCuatro.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TransportadoraId,Nombre")] Transportadora transportadora)
+        public async Task<IActionResult> Create([Bind("TransportadoraId,Rut,Nombre,CiudadSede,Direccion,Telefono")] Transportadora transportadora)
         {
             if (ModelState.IsValid)
             {
-               
-                _context.Add(transportadora);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var verificarExistenciaTransportadoraId = await _transportadoraBusiness.ObtenerTransportadoraPorId(transportadora.TransportadoraId);
+                if (verificarExistenciaTransportadoraId == null)
+                {
+                    await _transportadoraBusiness.GuardarTransportadora(transportadora);
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(transportadora);
         }
@@ -76,7 +78,7 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var transportadora = await _context.Transportadoras.FindAsync(id);
+            var transportadora = await _transportadoraBusiness.ObtenerTransportadoraPorId(id.Value);
             if (transportadora == null)
             {
                 return NotFound();
@@ -88,7 +90,6 @@ namespace TallerCuatro.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TransportadoraId,Nombre")] Transportadora transportadora)
         {
             if (id != transportadora.TransportadoraId)
@@ -98,24 +99,10 @@ namespace TallerCuatro.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(transportadora);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TransportadoraExists(transportadora.TransportadoraId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _transportadoraBusiness.EditarTransportadora(transportadora);
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["listaTransportadoras"] = _transportadoraBusiness.ObtenerListaTransportadoras();
             return View(transportadora);
         }
 
@@ -127,17 +114,17 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var transportadora = await _context.Transportadoras
-                .FirstOrDefaultAsync(m => m.TransportadoraId == id);
+            var transportadora = await _transportadoraBusiness.ObtenerTransportadoraPorId(id.Value);
             if (transportadora == null)
             {
                 return NotFound();
             }
 
+            await _transportadoraBusiness.EliminarTransportadora(transportadora);
             return View(transportadora);
         }
 
-        // POST: Transportadoras/Delete/5
+        /*// POST: Transportadoras/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -151,6 +138,6 @@ namespace TallerCuatro.Controllers
         private bool TransportadoraExists(int id)
         {
             return _context.Transportadoras.Any(e => e.TransportadoraId == id);
-        }
+        }*/
     }
 }

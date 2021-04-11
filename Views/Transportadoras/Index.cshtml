@@ -3,13 +3,8 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-
 @section Styles{
-
-
 }
-
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -18,12 +13,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Crear transportadora</h1>
+                    <h1 class="m-0">Transportadoras</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
+
                         <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
                         <li class="breadcrumb-item active">Gestionar transportadora</li>
+
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -34,7 +31,7 @@
     <div class="content">
         <div class="container-fluid">
             <p>
-                <a class="btn btn-outline-success" asp-action="Create"><i class="fa fa-plus-circle"></i> Crear nueva transportadora</a>
+                <a class="btn btn-outline-success" asp-action="Create"><i class="fa fa-plus-circle"></i> Crear nueva Transportadora</a>
             </p>
 
             <table class="table">
@@ -43,7 +40,12 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Nombre)
                         </th>
-                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Rut)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CiudadSede)
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,15 +56,21 @@
                                 @Html.DisplayFor(modelItem => item.Nombre)
                             </td>
                             <td>
+                                @Html.DisplayFor(modelItem => item.Rut)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CiudadSede)
+                            </td>
+                            <td>
                                 <a asp-action="Edit" asp-route-id="@item.TransportadoraId">Edit</a> |
                                 <a asp-action="Details" asp-route-id="@item.TransportadoraId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.TransportadoraId">Delete</a>
+                                <a asp-action="Delete" onclick="return confirm('¿Est&aacute; seguro que desea eliminar a la Transportadora?')" asp-route-id="@item.TransportadoraId">Delete</a>
+                                <!--<a onclick="confirm('¿Est&aacute; seguro que desea eliminar el cliente?')">Delete</a>-->
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-
 
 
         </div><!-- /.container-fluid -->
@@ -71,10 +79,8 @@
 </div>
 <!-- /.content-wrapper -->
 @section Scripts{
-
-
     <script src="~/js/Tabla.js"></script>
-
 }
+
 
 

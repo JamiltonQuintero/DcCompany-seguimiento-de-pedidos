@@ -12,9 +12,9 @@ using TallerCuatro.Models.ViewModels.Admin;
 namespace TallerCuatro.Models.Business
 {
 
-    
 
-    public class PaqueteBusiness :IPaqueteBusiness
+
+    public class PaqueteBusiness : IPaqueteBusiness
     {
 
         private readonly DbContextTaller _context;
@@ -28,9 +28,9 @@ namespace TallerCuatro.Models.Business
         public async Task<IEnumerable<Cliente>> ObtenerListaClientes()
         {
             return await _context.Clientes.ToListAsync();
-         
+
         }
-        
+
 
         public async Task<IEnumerable<Transportadora>> ObtenerListaTransportadora()
         {
@@ -60,6 +60,7 @@ namespace TallerCuatro.Models.Business
 
         public async Task GuardarPaquete(Paquete paquete)
         {
+
    
             try
             {
@@ -69,6 +70,7 @@ namespace TallerCuatro.Models.Business
                     paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
                 }
                 _context.Add(paquete);         
+
                 await _context.SaveChangesAsync();
                 paquete.CodigoMIA = ("MIA-" + paquete.PaqueteId);
                 await EditarPaquete(paquete);
@@ -77,7 +79,9 @@ namespace TallerCuatro.Models.Business
             {
                 Console.WriteLine(e.InnerException.Message);
             }
+
            
+
         }
 
         public async Task EditarPaquete(Paquete paquete)
@@ -111,8 +115,10 @@ namespace TallerCuatro.Models.Business
 
             }
         }
+
         
         public ReporteDashboardViewModel ReporteDashboar()
+
         {
             ReporteDashboardViewModel reporte = new ReporteDashboardViewModel
             {

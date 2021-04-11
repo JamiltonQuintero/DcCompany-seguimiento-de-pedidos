@@ -11,7 +11,7 @@ using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Controllers
 {
-    
+
     public class TipoMercanciasController : Controller
     {
         private readonly DbContextTaller _context;
