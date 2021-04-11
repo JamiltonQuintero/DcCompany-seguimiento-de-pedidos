@@ -19,7 +19,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">Usuarios</h1>
                     <p>
-                        <a asp-action="CrearUsuario" asp-controller="Usuarios">Crear nuevo usuario</a>
+                        <a asp-action="CrearRol" asp-controller="Admin">Crear nuevo Rol</a>
                     </p>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
@@ -83,5 +83,24 @@
 @section Scripts{
     <script src="~/js/tabla.js"></script>
 
+    <script>
 
+        @if (TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("CrearRol"))
+            {
+
+            <text>
+
+                Swal.fire({
+
+                    title: "Felicitaciones",
+                    type: "success",
+                    html: "@TempData["Mensaje"]"
+
+                });
+
+            </text>
+
+            }
+
+    </script>
 }

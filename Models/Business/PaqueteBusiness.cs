@@ -59,7 +59,7 @@ namespace TallerCuatro.Models.Business
 
         public async Task GuardarPaquete(Paquete paquete)
         {
-           paquete.CodigoMIA = ("MIA-" + ObtenerUltimoId());
+           
 
             if (paquete.ValorAPAgar == 0)
             {
@@ -69,7 +69,10 @@ namespace TallerCuatro.Models.Business
             try
             {
             
-                _context.Add(paquete);             
+
+                _context.Add(paquete);
+                paquete.CodigoMIA = ("MIA-" + await ObtenerUltimoId());
+                _context.Update(paquete);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -112,12 +115,34 @@ namespace TallerCuatro.Models.Business
             }
         }
 
-        
-
-        private int ObtenerUltimoId()
+        private async Task<int> ObtenerUltimoId()
         {
+            int ultmoId = 0;
+            var lista = await _context.Paquetes.ToListAsync(); 
 
-            var ultmoId = _context.Paquetes.Count();
+            if (lista.Count > 0)
+            {
+             
+                var totalElementos = 0;
+
+                foreach (var item in lista)
+                {
+                    totalElementos++;
+
+                    if (lista.Count == totalElementos)
+                    {
+
+                        return item.PaqueteId + 1;
+                    }
+
+
+                }
+
+            }else
+            {
+                return 1;
+            }
+            
 
             return ultmoId;
         }

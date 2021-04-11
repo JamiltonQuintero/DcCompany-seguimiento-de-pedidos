@@ -91,7 +91,17 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview" style="display: compact;">
+
                         <li class="nav-item">
+
+                            <a asp-action="ListarRoles" asp-controller="Admin" class="nav-link">
+                                <i class="fas fa-caret-right"></i>
+                                <p>Roles</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+
                             <a asp-action="Index" asp-controller="Transportadoras" class="nav-link">
                                 <i class="fas fa-caret-right"></i>
                                 <p>Transportadoras</p>
@@ -121,15 +131,15 @@
                                         <form asp-controller="Usuarios" asp-action="EditarPrecioPorLibra">
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                             <div class="form-group">
-                                                <label  class="control-label"></label>
-                                                <input  class="form-control" />
-                                                <span  class="text-danger"></span>
+                                                <label class="control-label"></label>
+                                                <input class="form-control" />
+                                                <span class="text-danger"></span>
                                             </div>
                                             <div class="form-group">
                                                 <input type="submit" value="Guardar" class="btn btn-primary" />
                                             </div>
                                         </form>
-                                        
+
 
                                     </p>
                                 </a>

@@ -48,8 +48,11 @@ namespace TallerCuatro.Controllers
                 var result = await _roleManager.CreateAsync(rol);
 
                 if (result.Succeeded)
-                    return RedirectToAction("ListarRoles", "Home");
-
+                {
+                    TempData["Accion"] = "CrearRol";
+                    TempData["Mensaje"] = "Rol " + rol.Name +" creado";
+                    return RedirectToAction("ListarRoles", "Admin");
+                }
 
                 foreach (var error in result.Errors)
                 {
