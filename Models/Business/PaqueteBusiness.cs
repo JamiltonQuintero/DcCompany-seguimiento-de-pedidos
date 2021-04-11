@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.DAL;
 using TallerCuatro.Models.Entities;
+using TallerCuatro.Models.ViewModels.Admin;
 
 namespace TallerCuatro.Models.Business
 {
@@ -59,24 +60,27 @@ namespace TallerCuatro.Models.Business
 
         public async Task GuardarPaquete(Paquete paquete)
         {
-            paquete.CodigoMIA = ("MIA-" + ObtenerUltimoId());
 
-            if (paquete.ValorAPAgar == 0)
-            {
-                paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
-            }
-
+   
             try
             {
+                
+                if (paquete.ValorAPAgar == 0)
+                {
+                    paquete.ValorAPAgar = ((float)(paquete.Peso * 100));
+                }
+                _context.Add(paquete);         
 
-                _context.Add(paquete);
                 await _context.SaveChangesAsync();
+                paquete.CodigoMIA = ("MIA-" + paquete.PaqueteId);
+                await EditarPaquete(paquete);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.InnerException.Message);
             }
 
+           
 
         }
 
@@ -112,14 +116,21 @@ namespace TallerCuatro.Models.Business
             }
         }
 
+        
+        public ReporteDashboardViewModel ReporteDashboar()
 
-
-        private int ObtenerUltimoId()
         {
+            ReporteDashboardViewModel reporte = new ReporteDashboardViewModel
+            {
+                TotCliente = _context.Clientes.Count(),
+                TotPaquete = _context.Paquetes.Count(),
+                TotUsuario = _context.UsuariosIdentity.Count(),
+                TotTransportadora = _context.Transportadoras.Count(),
+                TotTipoMercancia = _context.TiposMercancias.Count(),
+                TotRol = _context.Roles.Count()
+            };
 
-            var ultmoId = _context.Paquetes.Count();
-
-            return ultmoId;
+            return reporte;
         }
 
         public async Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TallerCuatro.Models.Entities;
+using TallerCuatro.Models.ViewModels.Admin;
 
 namespace TallerCuatro.Models.Abstract
 {
@@ -27,6 +28,9 @@ namespace TallerCuatro.Models.Abstract
         Task EliminarPaquete(Paquete paquete);
 
         Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id);
+
+        ReporteDashboardViewModel ReporteDashboar();
+
 
     }
 }

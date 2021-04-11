@@ -9,15 +9,19 @@ namespace TallerCuatro.Models.Entities
 {
     public class Cliente
     {
-        [DisplayName("Numero de casillero")]
+        [DisplayName("Número de casillero")]
         public int ClienteId { get; set; }
-        [Required]
-        public string Nombre { get; set; }
-        [Required]
 
-        [DisplayName("Correo electronico")]
+        [Required(ErrorMessage = "El nombre es requerido")]
+        public string Nombre { get; set; }
+        
+
+        [DisplayName("Correo electrónico")]
+        [Required(ErrorMessage = "El correo electrónico  es requerido")]
+        [EmailAddress(ErrorMessage = "Correo electrónico inválido")]
         public string Correo { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "La dirección es requerida")]
         public string Direccion { get; set; }
         public virtual Paquete Paquete { get; set; }
     }

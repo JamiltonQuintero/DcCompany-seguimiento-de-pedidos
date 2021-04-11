@@ -12,20 +12,16 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Usuarios</h1>
-                    <p>
-                        <a asp-action="CrearUsuario" asp-controller="Usuarios">Crear nuevo usuario</a>
-                    </p>
+                    <h1 class="m-0">Crear Usuario</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                        <li class="breadcrumb-item active">Usuarios</li>
+                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+                        <li class="breadcrumb-item active">Gestionar Usuario</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -33,64 +29,64 @@
     </div>
     <!-- /.content-header -->
     <!-- Main content -->
+
     <div class="content">
-
         <div class="container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-lg-11 align-self-center text-center">
-                    <table id="tabla" class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Documento)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Nombre)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Email)
-                                </th>
-                               
-                                <th>Rol</th>
+            <p>
+                <a class="btn btn-outline-success" asp-action="CrearUsuario"><i class="fa fa-plus-circle"></i> Crear nuevo usuario</a>
+            </p>
+            <table id="tabla" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Documento)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
 
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var usuario in Model)
-                            {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => usuario.Documento)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => usuario.Nombre)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => usuario.Email)
-                                </td>
+                        <th>Rol</th>
 
-                                <td>
-                                    @string.Join(" ", usuario.Rol.ToList())
-                                </td>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => usuario.Documento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => usuario.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => usuario.Email)
+                            </td>
 
-                                <td>
-                                    <form asp-action="eliminar" asp-route-id="@usuario.Id" method="post">
-                                        <span id=""></span>
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar el usuario?')">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.col-md-6 -->
-            </div>
-            <!-- /.row -->
+                            <td>
+                                @string.Join(" ", usuario.Rol.ToList())
+                            </td>
+
+                            <td>
+                                <form asp-action="eliminar" asp-route-id="@usuario.Id" method="post">
+                                    <span id=""></span>
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar el usuario?')">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
         </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content -->
+
+  
 </div>
 <!-- /.content-wrapper -->
 

@@ -16,10 +16,12 @@ namespace TallerCuatro.Controllers
     public class ClientesController : Controller
     {
         private readonly IClienteBusiness _clienteBusiness;
+        private readonly IPaqueteBusiness _paqueteBusiness;
 
-        public ClientesController(IClienteBusiness clienteBusiness)
+        public ClientesController(IClienteBusiness clienteBusiness, IPaqueteBusiness paqueteBusiness)
         {
             _clienteBusiness = clienteBusiness;
+            _paqueteBusiness = paqueteBusiness;
         }
 
         // GET: Clientes
@@ -37,11 +39,12 @@ namespace TallerCuatro.Controllers
             }
 
             var cliente = await _clienteBusiness.ObtenerClientePorId(id.Value);
-                
+            ViewData["PaquetesCliente"] = await _paqueteBusiness.ObtenerListaPaquetesPorClienteId(id.Value);
             if (cliente == null)
             {
                 return NotFound();
             }
+
 
             return View(cliente);
         }
@@ -49,7 +52,6 @@ namespace TallerCuatro.Controllers
         // GET: Clientes/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["listaClientes"] = new SelectList(await _clienteBusiness.ObtenerListaClientes(), "Numero de casillero", "Nombre", "Correo", "Direcion");
             return View();
         }
 
@@ -66,18 +68,25 @@ namespace TallerCuatro.Controllers
 
                 if (clienteTemp == null)
                 {
-                    await _clienteBusiness.GuardarCliente(cliente);
-                    return RedirectToAction(nameof(Index));
+                    try
+                    {
+                        await _clienteBusiness.GuardarCliente(cliente);
+                        return Json(new { data = "ok" });
+                    } 
+                    catch(Exception)
+                    {
+                        return Json(new { data = "error" });
+                    }
                 }
             }
-
-            return View(cliente);
+            return Json(new { data = "error" });
         }
 
 
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -100,40 +109,51 @@ namespace TallerCuatro.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ClienteId,Nombre,Correo,Direccion")] Cliente cliente)
         {
+
             if (id != cliente.ClienteId)
             {
-                return NotFound();
+                return Json(new { data = "error" });
             }
 
             if (ModelState.IsValid)
             {
-                await _clienteBusiness.EditarCliente(cliente);
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["listaClientes"] = _clienteBusiness.ObtenerListaClientes();
-            return View(cliente);
-        }
+                try
+                {
+                    await _clienteBusiness.EditarCliente(cliente);
+                    return Json(new { data = "ok" });
 
+                }
+                catch (Exception)
+                {
+
+                    return Json(new { data = "error" });
+                }
+            }
+            return Json(new { data = "error" });
+        }
         // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return Json(new { data = "error", message = "Id no encontrado"});
             }
-
-            var empleado = await _clienteBusiness.ObtenerClientePorId(id.Value);
-            if (empleado == null)
+            try
             {
-                return NotFound();
+                var cliente = await _clienteBusiness.ObtenerClientePorId(id.Value);
+                if (cliente == null)
+                    //return RedirectToAction("Error", "Admin");
+                    return Json(new { data = "error", message = "Cliente a eliminar no existe" });
+                await _clienteBusiness.EliminarCliente(cliente);
+                
+                return Json(new { data = "ok", message = "Cliente "+cliente.Nombre+" fue eliminado correctamente" });
             }
-
-            await _clienteBusiness.EliminarCliente(empleado);
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception)
+            {
+                //return RedirectToAction("Error", "Admin");
+                return Json(new { data = "error", message = "Ocurrió un error al eliminar el cliente" });
+            }
         }
-       
-
-        
+   
     }
 }
