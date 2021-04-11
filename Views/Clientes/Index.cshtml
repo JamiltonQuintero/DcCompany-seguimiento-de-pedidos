@@ -87,16 +87,13 @@
     <script src="~/js/Tabla.js"></script>
     <script>
         function eliminar(id, nombreCliente) {
-            //return confirm('¿Est&aacute; seguro que desea eliminar el cliente?')
-            //asp-action="Delete"
-            //asp-route-id="@@item.ClienteId"
             Swal.fire({
                 title: '¿Está seguro de eliminar el cliente?',
                 text: id + '-' + nombreCliente,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d33',//'#3085d6',
-                cancelButtonColor: '#6c757d',//'#d33',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Sí, eliminar!',
                 cancelButtonText: 'Cancelar',
                 reverseButtons: true
@@ -107,7 +104,6 @@
                         url: '@Url.Action("Delete","Clientes", new { id = "id" })'.replace("id", encodeURIComponent(id)),
                         contentType: false,
                         processData: false,
-                        //data: formData,
                         success: function (result) {
 
                             if (result.data == "ok") {

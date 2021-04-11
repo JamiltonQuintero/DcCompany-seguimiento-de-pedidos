@@ -26,5 +26,7 @@ namespace TallerCuatro.Models.Abstract
 
         Task EliminarPaquete(Paquete paquete);
 
+        Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id);
+
     }
 }

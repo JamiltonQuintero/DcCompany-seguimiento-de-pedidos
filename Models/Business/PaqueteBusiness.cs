@@ -122,6 +122,10 @@ namespace TallerCuatro.Models.Business
             return ultmoId;
         }
 
+        public async Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id)
+        {
+            return await _context.Paquetes.Include(t => t.Transportadora).Include(tm => tm.TipoMercancia).Where(paquete => paquete.ClienteId == id).ToListAsync();
+        }
     }
 
 }
