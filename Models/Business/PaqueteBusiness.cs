@@ -11,9 +11,9 @@ using TallerCuatro.Models.Entities;
 namespace TallerCuatro.Models.Business
 {
 
-    
 
-    public class PaqueteBusiness :IPaqueteBusiness
+
+    public class PaqueteBusiness : IPaqueteBusiness
     {
 
         private readonly DbContextTaller _context;
@@ -27,9 +27,9 @@ namespace TallerCuatro.Models.Business
         public async Task<IEnumerable<Cliente>> ObtenerListaClientes()
         {
             return await _context.Clientes.ToListAsync();
-         
+
         }
-        
+
 
         public async Task<IEnumerable<Transportadora>> ObtenerListaTransportadora()
         {
@@ -59,7 +59,7 @@ namespace TallerCuatro.Models.Business
 
         public async Task GuardarPaquete(Paquete paquete)
         {
-           paquete.CodigoMIA = ("MIA-" + ObtenerUltimoId());
+            paquete.CodigoMIA = ("MIA-" + ObtenerUltimoId());
 
             if (paquete.ValorAPAgar == 0)
             {
@@ -68,8 +68,8 @@ namespace TallerCuatro.Models.Business
 
             try
             {
-            
-                _context.Add(paquete);             
+
+                _context.Add(paquete);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -77,7 +77,7 @@ namespace TallerCuatro.Models.Business
                 Console.WriteLine(e.InnerException.Message);
             }
 
-           
+
         }
 
         public async Task EditarPaquete(Paquete paquete)
@@ -112,7 +112,7 @@ namespace TallerCuatro.Models.Business
             }
         }
 
-        
+
 
         private int ObtenerUltimoId()
         {
@@ -122,6 +122,10 @@ namespace TallerCuatro.Models.Business
             return ultmoId;
         }
 
+        public async Task<IEnumerable<Paquete>> ObtenerListaPaquetesPorClienteId(int id)
+        {
+            return await _context.Paquetes.Include(t => t.Transportadora).Include(tm => tm.TipoMercancia).Where(paquete => paquete.ClienteId == id).ToListAsync();
+        }
     }
 
 }

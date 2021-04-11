@@ -9,30 +9,29 @@ using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Models.Business
 {
-    public class ClienteBusiness :IClienteBusiness
+    public class TransportadoraBusiness : ITransportadoraBusiness
     {
-
-
         private readonly DbContextTaller _context;
-        public ClienteBusiness(DbContextTaller context)
+        public TransportadoraBusiness(DbContextTaller context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<Cliente>> ObtenerListaClientes()
+        public async Task<IEnumerable<Transportadora>> ObtenerListaTransportadoras()
         {
-            return await _context.Clientes.ToListAsync();
+            return await _context.Transportadoras.ToListAsync();
+        }
+        public async Task<Transportadora> ObtenerTransportadoraPorId(int id)
+        {
+            return await _context.Transportadoras.FirstOrDefaultAsync(t => t.TransportadoraId == id);
+
         }
 
-        public async Task<Cliente> ObtenerClientePorId(int id)
-        {
-            return await _context.Clientes.FirstOrDefaultAsync(m => m.ClienteId == id);
 
-        }
-        public async Task GuardarCliente(Cliente cliente)
+        public async Task GuardarTransportadora(Transportadora transportadora)
         {
             try
             {
-                _context.Add(cliente);
+                _context.Add(transportadora);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -41,11 +40,11 @@ namespace TallerCuatro.Models.Business
             }
 
         }
-        public async Task EditarCliente(Cliente cliente)
+        public async Task EditarTransportadora(Transportadora transportadora)
         {
             try
             {
-                _context.Update(cliente);
+                _context.Update(transportadora);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -53,11 +52,11 @@ namespace TallerCuatro.Models.Business
                 throw e;
             }
         }
-        public async Task EliminarCliente(Cliente cliente)
+        public async Task EliminarTransportadora(Transportadora transportadora)
         {
             try
             {
-                _context.Remove(cliente);
+                _context.Remove(transportadora);
                 await _context.SaveChangesAsync();
 
             }
