@@ -55,9 +55,9 @@
                                 @Html.DisplayFor(modelItem => item.Nombre)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.TipoMercanciaId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.TipoMercanciaId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.TipoMercanciaId">Delete</a>
+                                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.TipoMercanciaId"><i class="fas fa-user-edit"></i> Editar</a> |
+                                <a class="btn btn-success" asp-action="Details" asp-route-id="@item.TipoMercanciaId"><i class="fas fa-info-circle"></i> Detalles</a> |
+                                <a class="m1-1 btn btn-danger" onclick="return confirm('¿Desea eliminar el registro?')" asp-action="Delete" asp-route-id="@item.TipoMercanciaId"><i class="fas fa-user-minus"></i> Eliminar</a>
                             </td>
                         </tr>
                     }
@@ -70,10 +70,44 @@
     </div>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+<!-- /.content-wrapper@section Scripts{
+
+
+    <script src="~/js/Tabla.js"></script>
+
+} -->
+
 @section Scripts{
 
 
     <script src="~/js/Tabla.js"></script>
+
+    <script>
+
+        @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("EliminarOk")) { <text>
+
+              Swal.fire({
+                title: "¡Felicitaciones!",
+                type: "success",
+                html: "@TempData["Mensaje"]"
+              });
+
+             </text>
+    }
+
+
+
+         @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("EliminarNo")) { <text>
+
+              Swal.fire({
+                title: "¡Lo sentimos!",
+                type: "success",
+                html: "@TempData["Mensaje"]"
+              });
+
+             </text>
+    }
+
+    </script>
 
 }

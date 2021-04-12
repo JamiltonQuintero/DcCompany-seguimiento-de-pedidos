@@ -111,7 +111,7 @@ namespace TallerCuatro.Controllers
                     await _paqueteBusiness.GuardarPaquete(paquete);
                     return Json(new { data = "ok" });
                 }
-                catch (Exception)
+                catch (Exception) { 
 
 
                     return Json(new { data = "error" });

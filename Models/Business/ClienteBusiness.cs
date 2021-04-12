@@ -73,12 +73,5 @@ namespace TallerCuatro.Models.Business
         {
             return await _context.ClienteDetalle.Include(x => x.Paquete).Where(y => y.EmpleadoId == id).ToListAsync();
         }*/
-
-
-
-
-
-
-
     }
-}
+

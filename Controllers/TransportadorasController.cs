@@ -124,20 +124,6 @@ namespace TallerCuatro.Controllers
             return View(transportadora);
         }
 
-        /*// POST: Transportadoras/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var transportadora = await _context.Transportadoras.FindAsync(id);
-            _context.Transportadoras.Remove(transportadora);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool TransportadoraExists(int id)
-        {
-            return _context.Transportadoras.Any(e => e.TransportadoraId == id);
-        }*/
+       
     }
 }
