@@ -89,7 +89,7 @@ namespace TallerCuatro
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
             });
         }
     }
