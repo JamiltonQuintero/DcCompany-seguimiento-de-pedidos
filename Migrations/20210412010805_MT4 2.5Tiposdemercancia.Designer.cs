@@ -10,8 +10,8 @@ using TallerCuatro.Models.DAL;
 namespace TallerCuatro.Migrations
 {
     [DbContext(typeof(DbContextTaller))]
-    [Migration("20210410024136_Inicial")]
-    partial class Inicial
+    [Migration("20210412010805_MT4 2.5Tiposdemercancia")]
+    partial class MT425Tiposdemercancia
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -302,7 +302,12 @@ namespace TallerCuatro.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TransportadoraId")
+                        .HasColumnType("int");
+
                     b.HasKey("TipoMercanciaId");
+
+                    b.HasIndex("TransportadoraId");
 
                     b.ToTable("TiposMercancias");
                 });
@@ -314,8 +319,21 @@ namespace TallerCuatro.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("CiudadSede")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Direccion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rut")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Telefono")
+                        .HasColumnType("int");
 
                     b.HasKey("TransportadoraId");
 
@@ -405,6 +423,15 @@ namespace TallerCuatro.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TallerCuatro.Models.Entities.Transportadora", "Transportadora")
+                        .WithMany()
+                        .HasForeignKey("TransportadoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TallerCuatro.Models.Entities.TipoMercancia", b =>
+                {
                     b.HasOne("TallerCuatro.Models.Entities.Transportadora", "Transportadora")
                         .WithMany()
                         .HasForeignKey("TransportadoraId")

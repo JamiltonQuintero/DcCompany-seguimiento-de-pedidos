@@ -2,7 +2,7 @@
 
 namespace TallerCuatro.Migrations
 {
-    public partial class quitarClienteDetalle : Migration
+    public partial class MT426TiposMerca : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
