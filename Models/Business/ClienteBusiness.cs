@@ -68,10 +68,12 @@ namespace TallerCuatro.Models.Business
 
         }
 
-        }/*
+        /*
         public async Task<IEnumerable<ClienteDetalle>> ObtenerClienteDetalleporId(int id)
         {
             return await _context.ClienteDetalle.Include(x => x.Paquete).Where(y => y.EmpleadoId == id).ToListAsync();
         }*/
+
+
     }
 
