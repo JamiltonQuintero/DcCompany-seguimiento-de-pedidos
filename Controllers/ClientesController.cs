@@ -64,10 +64,7 @@ namespace TallerCuatro.Controllers
         {
             if (ModelState.IsValid)
             {
-                var clienteTemp = await _clienteBusiness.ObtenerClientePorId(cliente.ClienteId);
-
-                if (clienteTemp == null)
-                {
+                
                     try
                     {
                         await _clienteBusiness.GuardarCliente(cliente);
@@ -77,7 +74,7 @@ namespace TallerCuatro.Controllers
                     {
                         return Json(new { data = "error" });
                     }
-                }
+                
             }
             return Json(new { data = "error" });
         }
