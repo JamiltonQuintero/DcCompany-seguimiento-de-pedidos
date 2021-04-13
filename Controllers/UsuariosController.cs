@@ -125,7 +125,7 @@ namespace TallerCuatro.Controllers
                 if (result.Succeeded)
                 {
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Dashboard", "Admin");
 
                 }
                 ModelState.AddModelError("","Error login");
