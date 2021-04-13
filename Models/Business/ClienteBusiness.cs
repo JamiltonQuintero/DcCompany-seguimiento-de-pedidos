@@ -9,7 +9,7 @@ using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Models.Business
 {
-    public class ClienteBusiness :IClienteBusiness
+    public class ClienteBusiness : IClienteBusiness
     {
 
 
@@ -76,4 +76,5 @@ namespace TallerCuatro.Models.Business
 
 
     }
+}
 
