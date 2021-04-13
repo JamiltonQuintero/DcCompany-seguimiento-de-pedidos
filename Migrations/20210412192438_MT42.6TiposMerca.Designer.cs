@@ -10,8 +10,8 @@ using TallerCuatro.Models.DAL;
 namespace TallerCuatro.Migrations
 {
     [DbContext(typeof(DbContextTaller))]
-    [Migration("20210410210522_MT4 Transportadoras")]
-    partial class MT4Transportadoras
+    [Migration("20210412192438_MT42.6TiposMerca")]
+    partial class MT426TiposMerca
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -302,7 +302,12 @@ namespace TallerCuatro.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TransportadoraId")
+                        .HasColumnType("int");
+
                     b.HasKey("TipoMercanciaId");
+
+                    b.HasIndex("TransportadoraId");
 
                     b.ToTable("TiposMercancias");
                 });
@@ -315,7 +320,6 @@ namespace TallerCuatro.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CiudadSede")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
@@ -419,6 +423,15 @@ namespace TallerCuatro.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TallerCuatro.Models.Entities.Transportadora", "Transportadora")
+                        .WithMany()
+                        .HasForeignKey("TransportadoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TallerCuatro.Models.Entities.TipoMercancia", b =>
+                {
                     b.HasOne("TallerCuatro.Models.Entities.Transportadora", "Transportadora")
                         .WithMany()
                         .HasForeignKey("TransportadoraId")

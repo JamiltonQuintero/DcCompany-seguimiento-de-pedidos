@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TallerCuatro.Models.Abstract;
 using TallerCuatro.Models.DAL;
 using TallerCuatro.Models.Entities;
 
@@ -14,17 +15,19 @@ namespace TallerCuatro.Controllers
 
     public class TipoMercanciasController : Controller
     {
-        private readonly DbContextTaller _context;
+        private readonly ITipoMercanciaBusiness _tipoMercanciasBusiness;
 
-        public TipoMercanciasController(DbContextTaller context)
+        public TipoMercanciasController (ITipoMercanciaBusiness tipoMercanciasBusiness)
         {
-            _context = context;
+            _tipoMercanciasBusiness = tipoMercanciasBusiness;
         }
+
 
         // GET: TipoMercancias
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TiposMercancias.ToListAsync());
+            return View(await _tipoMercanciasBusiness.ObtenerListaTipoMercancia());
+
         }
 
         // GET: TipoMercancias/Details/5
@@ -35,8 +38,8 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var tipoMercancia = await _context.TiposMercancias
-                .FirstOrDefaultAsync(m => m.TipoMercanciaId == id);
+            var tipoMercancia = await _tipoMercanciasBusiness.ObtenerTipoMercanciaPorId(id.Value);
+
             if (tipoMercancia == null)
             {
                 return NotFound();
@@ -46,8 +49,10 @@ namespace TallerCuatro.Controllers
         }
 
         // GET: TipoMercancias/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewData["listaTipoMercancias"] = new SelectList(await _tipoMercanciasBusiness.ObtenerListaTipoMercancia(), "TipoMercanciaId","Nombre", "Transportadora Encargada");
+
             return View();
         }
 
@@ -55,15 +60,19 @@ namespace TallerCuatro.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TipoMercanciaId,Nombre")] TipoMercancia tipoMercancia)
+        public async Task<IActionResult> Create([Bind("TipoMercanciaId", "Nombre")] TipoMercancia tipoMercancia)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tipoMercancia);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var verificarExistenciaTipoMercanciaId = await _tipoMercanciasBusiness.ObtenerTipoMercanciaPorId(tipoMercancia.TipoMercanciaId);
+                
+                if (verificarExistenciaTipoMercanciaId == null)
+                {
+                    await _tipoMercanciasBusiness.GuardarTipoMercancia(tipoMercancia);
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            
             return View(tipoMercancia);
         }
 
@@ -75,7 +84,7 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var tipoMercancia = await _context.TiposMercancias.FindAsync(id);
+            var tipoMercancia = await _tipoMercanciasBusiness.ObtenerTipoMercanciaPorId(id.Value);
             if (tipoMercancia == null)
             {
                 return NotFound();
@@ -87,7 +96,6 @@ namespace TallerCuatro.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TipoMercanciaId,Nombre")] TipoMercancia tipoMercancia)
         {
             if (id != tipoMercancia.TipoMercanciaId)
@@ -97,24 +105,11 @@ namespace TallerCuatro.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(tipoMercancia);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TipoMercanciaExists(tipoMercancia.TipoMercanciaId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _tipoMercanciasBusiness.EditarTipoMercancia(tipoMercancia);
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["listaTiposMercancias"] = _tipoMercanciasBusiness.ObtenerListaTipoMercancia();
+
             return View(tipoMercancia);
         }
 
@@ -126,30 +121,15 @@ namespace TallerCuatro.Controllers
                 return NotFound();
             }
 
-            var tipoMercancia = await _context.TiposMercancias
-                .FirstOrDefaultAsync(m => m.TipoMercanciaId == id);
+            var tipoMercancia = await _tipoMercanciasBusiness.ObtenerTipoMercanciaPorId(id.Value);
             if (tipoMercancia == null)
-            {
+            {   
                 return NotFound();
             }
 
+            await _tipoMercanciasBusiness.EliminarTipoMercancia(tipoMercancia);
             return View(tipoMercancia);
         }
 
-        // POST: TipoMercancias/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var tipoMercancia = await _context.TiposMercancias.FindAsync(id);
-            _context.TiposMercancias.Remove(tipoMercancia);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool TipoMercanciaExists(int id)
-        {
-            return _context.TiposMercancias.Any(e => e.TipoMercanciaId == id);
-        }
     }
 }

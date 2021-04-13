@@ -37,6 +37,7 @@ namespace TallerCuatro
             services.AddScoped<IClienteBusiness, ClienteBusiness>();
             services.AddScoped<IPaqueteBusiness, PaqueteBusiness>();
             services.AddScoped<ITransportadoraBusiness, TransportadoraBusiness>();
+            services.AddScoped<ITipoMercanciaBusiness, TipoMercanciaBusiness>();
 
             services.AddIdentity<UsuarioIdentity, IdentityRole>().AddEntityFrameworkStores<DbContextTaller>();
 

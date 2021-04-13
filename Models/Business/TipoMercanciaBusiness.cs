@@ -9,41 +9,27 @@ using TallerCuatro.Models.Entities;
 
 namespace TallerCuatro.Models.Business
 {
-    public class TransportadoraBusiness : ITransportadoraBusiness
+    public class TipoMercanciaBusiness : ITipoMercanciaBusiness
     {
         private readonly DbContextTaller _context;
-        public TransportadoraBusiness(DbContextTaller context)
+        public TipoMercanciaBusiness(DbContextTaller context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<Transportadora>> ObtenerListaTransportadoras()
+        public async Task<TipoMercancia> ObtenerTipoMercanciaPorId(int id)
         {
-            return await _context.Transportadoras.ToListAsync();
-        }
-        public async Task<Transportadora> ObtenerTransportadoraPorId(int id)
-        {
-            return await _context.Transportadoras.FirstOrDefaultAsync(t => t.TransportadoraId == id);
+         return await _context.TiposMercancias.FirstOrDefaultAsync(tm => tm.TipoMercanciaId== id);;
 
         }
-
-        public async Task GuardarTransportadora(Transportadora transportadora)
+        public async Task<IEnumerable<TipoMercancia>> ObtenerListaTipoMercancia()
+        {
+            return await _context.TiposMercancias.ToListAsync();
+        }
+        public async Task GuardarTipoMercancia(TipoMercancia tipoMercancia)
         {
             try
             {
-                _context.Add(transportadora);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-        }
-        public async Task EditarTransportadora(Transportadora transportadora)
-        {
-            try
-            {
-                _context.Update(transportadora);
+                _context.Add(tipoMercancia);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -51,20 +37,32 @@ namespace TallerCuatro.Models.Business
                 throw e;
             }
         }
-        public async Task EliminarTransportadora(Transportadora transportadora)
+
+        public async Task EditarTipoMercancia(TipoMercancia tipoMercancia)
         {
             try
             {
-                _context.Remove(transportadora);
+                _context.Update(tipoMercancia);
                 await _context.SaveChangesAsync();
-
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
+        public async Task EliminarTipoMercancia(TipoMercancia tipoMercancia)
+        {
+            try
+            {
+                _context.Remove(tipoMercancia);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+       
     }
 }

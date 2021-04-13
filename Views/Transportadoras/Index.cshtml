@@ -62,9 +62,9 @@
                                 @Html.DisplayFor(modelItem => item.CiudadSede)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.TransportadoraId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.TransportadoraId">Details</a> |
-                                <a asp-action="Delete" onclick="return confirm('¿Est&aacute; seguro que desea eliminar a la Transportadora?')" asp-route-id="@item.TransportadoraId">Delete</a>
+                                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.TransportadoraId">Editar</a> |
+                                <a class="btn btn-success"  asp-action="Details" asp-route-id="@item.TransportadoraId">Detalles</a> |
+                                <a class="m1-1 btn btn-danger" asp-action="Delete" onclick="return confirm('¿Desea eliminar la Transportadora?')" asp-route-id="@item.TransportadoraId">Eliminar</a>
                                 <!--<a onclick="confirm('¿Est&aacute; seguro que desea eliminar el cliente?')">Delete</a>-->
                             </td>
                         </tr>

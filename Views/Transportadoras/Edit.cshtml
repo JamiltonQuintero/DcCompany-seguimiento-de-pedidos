@@ -4,51 +4,146 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Transportadora</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="TransportadoraId" />
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CiudadSede" class="control-label"></label>
-                <input asp-for="CiudadSede" class="form-control" />
-                <span asp-validation-for="CiudadSede" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control" />
-                <span asp-validation-for="Direccion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rut" class="control-label"></label>
-                <input asp-for="Rut" class="form-control" />
-                <span asp-validation-for="Rut" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Editar T</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Paquetes">Gestión Paquetes</a></li>
+                        <li class="breadcrumb-item active">Editar Transportadora</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
-</div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
 
-<div>
-    <a asp-action="Index">Back to List</a>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="TransportadoraId" />
+                                <div class="form-group">
+                                    <label asp-for="Nombre" class="control-label"></label>
+                                    <input asp-for="Nombre" class="form-control" />
+                                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CiudadSede" class="control-label"></label>
+                                    <input asp-for="CiudadSede" class="form-control" />
+                                    <span asp-validation-for="CiudadSede" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Direccion" class="control-label"></label>
+                                    <input asp-for="Direccion" class="form-control" />
+                                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Telefono" class="control-label"></label>
+                                    <input asp-for="Telefono" class="form-control" />
+                                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Rut" class="control-label"></label>
+                                    <input asp-for="Rut" class="form-control" />
+                                    <span asp-validation-for="Rut" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" value="Editar" id="editarTransportadora" name="editarTransportadora" class="btn btn-primary" />
+
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <a asp-action="Index">Regresar</a>
+                    </div>
+
+                </div>
+                <!-- /.col-md-6 -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
 </div>
+<!-- /.content-wrapper -->
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#editarTransportadora").click(function () {
+
+                Swal.fire({ //Mensaje de confirmar
+                    title: '¿Desea guardar esta transportadora?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Guardar`,
+                denyButtonText: `No guardar`,
+            }).then((result) => {
+
+                if (result.isConfirmed) { // si confirmamos
+                    var formData = new FormData(); //se crea el ojeto de tipo formData que va a contener todo lo que vamos a enviar
+                    formData.append("Nombre", document.getElementById("nombre").value);
+                    $.ajax({
+                            type: "POST",
+                            //url: "../Cargos/CrearTransportadora",
+                            url: '@Url.Action("Edit", "Transportadora")',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (result) {
+                                //console.log(result.data);
+                                //alert(result.data);
+                                if (result.data == "ok") {
+                                    setTimeout(
+                                        function () {
+                                            window.location.href = "@Url.Action("Index", "Transportadora")";
+                                        }, 2000);
+                                    Swal.fire({
+                                        //position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Transportadora guardada',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                } else {
+                                    console.log("ERROR!!")
+
+                                }
+                            },
+                            error: function (err) {
+
+                                console.log(err.data)
+                            }
+                        });
+
+                } else if (result.isDenied) {
+                    Swal.fire('Transportadora no guardada', '', 'info')
+                }
+            })
+
+            })
+
+        })
+
+    </script>
 }

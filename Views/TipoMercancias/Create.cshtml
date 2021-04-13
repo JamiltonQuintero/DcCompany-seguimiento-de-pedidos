@@ -43,10 +43,12 @@
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <input type="submit" value="Crear" class="btn btn-primary" />
                         </div>
                     </form>
-
+                    <div>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Volver</a>
+                    </div>
                 </div>
                 <!-- /.col-md-6 -->
             </div>
@@ -58,4 +60,73 @@
 <!-- /.content-wrapper -->
 
 @section Scripts{
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#crearPaquete").click(function () {
+
+
+
+                Swal.fire({ //Mensaje de confirmar
+                    title: '¿Desea guardar este tipo de mercancia?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Guardar`,
+                denyButtonText: `No guardar`,
+            }).then((result) => {
+
+                if (result.isConfirmed) { // si confirmamos
+
+                    var url = $(this).data('url');
+                    var imagen = $("#imagen").prop("files");
+                    var formData = new FormData();
+                    formData.append("Nombre", document.getElementById("nombre").value);
+                    formData.append("Imagen", imagen[0]);
+                    $.ajax({
+                            type: "POST",
+                            //url: "../Cargos/CrearCargo",
+                            url: '@Url.Action("Create", "TiposMercancias")',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (result) {
+                                //console.log(result.data);
+                                //alert(result.data);
+                                if (result.data == "ok") {
+                                    setTimeout(
+                                        function () {
+                                            window.location.href = "@Url.Action("Index", "TiposMercancias")";
+                                        }, 2000);
+                                    Swal.fire({
+                                        //position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Tipo de mercancia guardado',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                } else {
+                                    console.log("ERROR!!")
+
+                                }
+                            },
+                            error: function (err) {
+
+                                console.log(err.data)
+                            }
+                        });
+
+                } else if (result.isDenied) {
+                    Swal.fire('Tipo de mercancia no guardada', '', 'info')
+                }
+            })
+
+            })
+
+        })
+
+    </script>
+
 }
